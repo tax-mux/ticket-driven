@@ -24,6 +24,8 @@
 | `.cursor/skills/<name>` | Cursor プロジェクトスキル（正本への symlink） |
 | `~/.cursor/skills/<name>` | 個人グローバル（任意・正本への symlink） |
 | `.opencode/opencode.jsonc` | OpenCode 登録（gitignore。example からコピー） |
+| `.cursor/mcp.json` | Cursor MCP（Redmine / MemPalace / TelosPVL）。秘密は `.env`） |
+| `.env` | Cursor MCP 用秘密（gitignore。`.env.example` からコピー） |
 
 マッピング: `skills/navigation-protocol.md`
 

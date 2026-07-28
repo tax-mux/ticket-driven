@@ -36,6 +36,9 @@ export REDMINE_API_KEY=your_key
 
 - プロジェクト: `.cursor/skills/` → `skills/` へのシンボリックリンク（リポジトリ同梱）
 - 個人: `~/.cursor/skills/` に同名リンクを張ると他ワークスペースでも利用可
+- MCP: `.cursor/mcp.json`（Redmine / MemPalace / TelosPVL）
+  - `cp .env.example .env` してキーを埋める（`.env` は gitignore）
+  - 反映には Cursor のウィンドウ再読み込みが必要
 
 ### 5. 検証
 
@@ -84,6 +87,8 @@ Cursor ユーザールールの commit/PR 手順が既定。本リポの `git-*`
 skills/<name>/SKILL.md   # 正本スキル
 skills/navigation-protocol.md
 .cursor/skills/          # Cursor 向けシンボリックリンク
+.cursor/mcp.json         # Cursor MCP（秘密は .env）
+.env.example
 .opencode/
   opencode.jsonc.example # 追跡するテンプレート
   opencode.jsonc         # ローカル秘密設定（gitignore）
