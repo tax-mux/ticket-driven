@@ -28,7 +28,7 @@
 | `ticket-status` | ステータス別アクション |
 | `ticket-update` | チケット更新 |
 | `git-commit` | Gitコミット |
-| `git-pr` | PR作成 |
+| `git-pr` | PR作成（gh cli/GitBucket API対応） |
 | `git-branch` | ブランチ操作 |
 | `git-rebase` | リベース操作 |
 | `git-diff` | diff確認・レビュー |
