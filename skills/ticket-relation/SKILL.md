@@ -11,32 +11,47 @@ description: Redmineチケット間の依存関係・関連付けを管理する
 | 関係 | 説明 |
 |---|---|
 | `relates` | 関連 |
-| `depends on` | 依存（これが終わらないと次が始まらない） |
-| `dependent` | 被依存（これが終わらないと前が始まらない） |
+| `precedes` | 先行（これが終わると次が可能） |
+| `follows` | 後続 |
+| `blocks` | ブロック |
+| `blocked` | 被ブロック |
 | `duplicates` | 重複 |
-| `starts` | 開始（これが始まったら次も始まる） |
-| `ended by` | 終了（これが終わったら前も終わる） |
-| `copies` | コピー |
-| `clones` | クローン |
+| `duplicated` | 被重複 |
+| `copied_to` | コピー先 |
+| `copied_from` | コピー元 |
+
+※ Redmine の表記は環境により異なる。不明なら作成前に既存 relation を確認する。
 
 ## 関連付け追加
 
+```json
+{
+  "action": "create",
+  "issue_id": "{ID}",
+  "relation": {
+    "issue_to_id": 43,
+    "relation_type": "relates",
+    "delay": 0
+  }
+}
 ```
-redmine_issue_relations action=create issue_id=\"{ID}\" relation=\"{
-  \\\"issue_to_id\\\": {関連チケットID},
-  \\\"relation_type\\\": \\\"depends on\\\",
-  \\\"delay\\\": 0
-}\"
-```
+
+ツール: `redmine_issue_relations`（`relation` はオブジェクト）
 
 ## 関連付け削除
 
-```
-redmine_issue_relations action=delete issue_id=\"{ID}\" relation_id=\"{関係ID}\"
+```json
+{
+  "action": "delete",
+  "relation_id": "{関係ID}"
+}
 ```
 
 ## 関連一覧取得
 
-```
-redmine_issue_relations action=list issue_id=\"{ID}\"
+```json
+{
+  "action": "list",
+  "issue_id": "{ID}"
+}
 ```

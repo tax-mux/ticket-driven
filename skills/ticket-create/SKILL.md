@@ -8,22 +8,27 @@ Redmine に新しいチケットを作成する手順。
 
 ## チケット作成
 
+```json
+{
+  "action": "create",
+  "issue": {
+    "project_id": "{プロジェクトID}",
+    "tracker_id": 2,
+    "subject": "タイトル",
+    "description": "説明",
+    "priority_id": 2,
+    "category_id": 1,
+    "assigned_to_id": 1
+  }
+}
 ```
-redmine_issues action=create issue=\"{
-  \\\"project_id\\\": \\\"{プロジェクトID}\\\",
-  \\\"tracker_id\\\": {トラッカーID},
-  \\\"subject\\\": \\\"タイトル\\\",
-  \\\"description\\\": \\\"説明\\\",
-  \\\"priority_id\\\": {優先度ID},
-  \\\"category_id\\\": {カテゴリID},
-  \\\"assigned_to_id\\\": {担当者ID}
-}\"
-```
+
+ツール: `redmine_issues`（`issue` は **オブジェクト**。JSON文字列にしない）
 
 ## 必須フィールド
 
 - `project_id`: プロジェクト（ID または識別子）
-- `tracker_id`: トラッカー（ID を取得: `redmine_trackers action=list`）
+- `tracker_id`: トラッカー（ID を取得: `redmine_trackers` `action=list`）
 - `subject`: タイトル
 
 ## 任意フィールド
@@ -32,7 +37,7 @@ redmine_issues action=create issue=\"{
 - `priority_id`: 優先度（デフォルト: normal）
 - `category_id`: カテゴリ
 - `assigned_to_id`: 担当者
-- `observer_ids`: 観測者
+- `watcher_user_ids`: ウォッチャー
 - `start_date`: 開始日
 - `due_date`: 期限
 - `custom_fields`: カスタムフィールド

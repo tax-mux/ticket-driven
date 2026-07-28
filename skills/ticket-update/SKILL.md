@@ -8,12 +8,18 @@ description: 既存Redmineチケットの状態・情報を更新する。進捗
 
 ## 基本的な更新
 
+```json
+{
+  "action": "update",
+  "issue_id": "{ID}",
+  "issue": {
+    "status_id": 2,
+    "notes": "コメント"
+  }
+}
 ```
-redmine_issues action=update issue_id=\"{ID}\" issue=\"{
-  \\\"status_id\\\": {ステータスID},
-  \\\"notes\\\": \\\"コメント\\\"
-}\"
-```
+
+ツール: `redmine_issues`（`issue` / `issue_id` はオブジェクトと文字列。エスケープ済みJSON文字列にしない）
 
 ## 更新可能なフィールド
 
@@ -69,8 +75,12 @@ redmine_issues action=update issue_id=\"{ID}\" issue=\"{
 
 ### 更新手順
 
-```
-redmine_issues action=update issue_id=\"{ID}\" issue=\"{\\\"description\\\": \\\"{更新後の説明}\\\"}\"
+```json
+{
+  "action": "update",
+  "issue_id": "{ID}",
+  "issue": { "description": "{更新後の説明}" }
+}
 ```
 
 ### 完了チェック
@@ -84,18 +94,40 @@ redmine_issues action=update issue_id=\"{ID}\" issue=\"{\\\"description\\\": \\\
 
 ## 進捗率更新
 
-```
-redmine_issues action=update issue_id=\"{ID}\" issue=\"{\\\"done_ratio\\\": 50}\"
+```json
+{
+  "action": "update",
+  "issue_id": "{ID}",
+  "issue": { "done_ratio": 50 }
+}
 ```
 
 ## 担当者変更
 
-```
-redmine_issues action=update issue_id=\"{ID}\" issue=\"{\\\"assigned_to_id\\\": {ユーザーID}}\"
+```json
+{
+  "action": "update",
+  "issue_id": "{ID}",
+  "issue": { "assigned_to_id": 1 }
+}
 ```
 
 ## ステータス変更
 
+```json
+{
+  "action": "update",
+  "issue_id": "{ID}",
+  "issue": { "status_id": 3 }
+}
 ```
-redmine_issues action=update issue_id=\"{ID}\" issue=\"{\\\"status_id\\\": {ステータスID}}\"
+
+## コメントのみ（推奨）
+
+```json
+{
+  "action": "add_note",
+  "issue_id": "{ID}",
+  "notes": "進捗中: ..."
+}
 ```

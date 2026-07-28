@@ -8,28 +8,48 @@ description: 条件に合うRedmineチケットを取得する。ステータス
 
 ## 全件取得（ページネーション対応）
 
-```
-redmine_paginated_request path=\"/issues.json\" query=\"{\\\"project_id\\\": \\\"{プロジェクト}\\\"}\"
+```json
+{
+  "path": "/issues.json",
+  "query": { "project_id": "{プロジェクト}" },
+  "limit": 100
+}
 ```
 
-## 条件指定
+ツール: `redmine_paginated_request`
+
+## 条件指定（`redmine_issues`）
+
+`list` ではフィルタをトップレベルに置いても、`query` オブジェクトにまとめてもよい。
 
 ### ステータス別
 
-```
-redmine_issues action=list query=\"{\\\"status_id\\\": \\\"open\\\", \\\"project_id\\\": \\\"{プロジェクト}\\\"}\"
+```json
+{
+  "action": "list",
+  "status_id": "open",
+  "project_id": "{プロジェクト}"
+}
 ```
 
 ### 担当者別
 
-```
-redmine_issues action=list query=\"{\\\"assigned_to_id\\\": \\\"{ユーザーID}\\\", \\\"project_id\\\": \\\"{プロジェクト}\\\"}\"
+```json
+{
+  "action": "list",
+  "assigned_to_id": "{ユーザーID}",
+  "project_id": "{プロジェクト}"
+}
 ```
 
 ### トラッカー別
 
-```
-redmine_issues action=list query=\"{\\\"tracker_id\\\": \\\"{トラッカーID}\\\", \\\"project_id\\\": \\\"{プロジェクト}\\\"}\"
+```json
+{
+  "action": "list",
+  "tracker_id": "{トラッカーID}",
+  "project_id": "{プロジェクト}"
+}
 ```
 
 ## 主要クエリパラメータ
@@ -43,11 +63,14 @@ redmine_issues action=list query=\"{\\\"tracker_id\\\": \\\"{トラッカーID}\
 | `category_id` | カテゴリ |
 | `priority_id` | 優先度 |
 | `cf_1` | カスタムフィールド（ID） |
-| `q` | 全文検索キーワード |
-| `include` | 含む情報（journals, watchers, children） |
+| `include` | 含む情報（journals, watchers, children）※カンマ区切り文字列 |
 
 ## 含む情報
 
-```
-redmine_issues action=list query=\"{\\\"status_id\\\": \\\"open\\\", \\\"include\\\": \\\"journals,watchers\\\"}\"
+```json
+{
+  "action": "list",
+  "status_id": "open",
+  "include": "journals,watchers"
+}
 ```

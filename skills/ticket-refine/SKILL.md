@@ -31,9 +31,14 @@ Redmine チケットの内容を精緻化し、開発可能な状態に整える
 
 ### 1. 現状分析
 
+```json
+{
+  "action": "get",
+  "issue_id": "{ID}",
+  "include": ["journals"]
+}
 ```
-redmine_issues action=get issue_id="{ID}" include="journals"
-```
+ツール: `redmine_issues`
 
 以下の項目をチェック:
 
@@ -113,14 +118,23 @@ redmine_issues action=get issue_id="{ID}" include="journals"
 
 精緻化後、チケットに反映:
 
+```json
+{
+  "action": "update",
+  "issue_id": "{ID}",
+  "issue": { "description": "{精緻化内容}" }
+}
 ```
-redmine_issues action=update issue_id="{ID}" issue="{\\\"description\\\": \\\"{精緻化内容}\\\"}"
-```
+ツール: `redmine_issues`
 
 ジャーナルにコメント追加:
 
-```
-redmine_issues action=add_note issue_id="{ID}" notes="チケットを精緻化: {要約}"
+```json
+{
+  "action": "add_note",
+  "issue_id": "{ID}",
+  "notes": "チケットを精緻化: {要約}"
+}
 ```
 
 ## 精緻化チェックリスト

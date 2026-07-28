@@ -7,6 +7,7 @@
 | プロジェクト識別子 | `{your-redmine-project}` |
 | プロジェクト名 | macbook pro 作業環境 |
 | APIキー | 環境変数 `REDMINE_API_KEY` に設定 |
+| URL | `http://127.0.0.1:3000` |
 
 ## GitBucket
 
@@ -15,7 +16,18 @@
 | URL | `http://{gitbucket-host}:8080` |
 | リポジトリ | `ticket-driven` |
 
-## スキル
+## スキル配置
+
+| 場所 | 用途 |
+|------|------|
+| `skills/<name>/SKILL.md` | 正本（OpenCode / Cursor 共通） |
+| `.cursor/skills/<name>` | Cursor プロジェクトスキル（正本への symlink） |
+| `~/.cursor/skills/<name>` | 個人グローバル（任意・正本への symlink） |
+| `.opencode/opencode.jsonc` | OpenCode 登録（gitignore。example からコピー） |
+
+マッピング: `skills/navigation-protocol.md`
+
+## スキル一覧
 
 | スキル名 | 内容 |
 |---------|------|
@@ -27,18 +39,23 @@
 | `ticket-split` | チケット分割 |
 | `ticket-status` | ステータス別アクション |
 | `ticket-update` | チケット更新 |
-| `git-commit` | Gitコミット |
-| `git-pr` | PR作成（gh cli/GitBucket API対応） |
+| `git-commit` | Gitコミット（依頼時。標準ルールと併用） |
+| `git-pr` | PR作成（gh / GitBucket API） |
 | `git-branch` | ブランチ操作 |
 | `git-rebase` | リベース操作 |
 | `git-diff` | diff確認・レビュー |
 | `git-log` | ログ検索 |
 
+### Git スキルと Cursor 標準ルール
+
+- コミット・PR の安全手順は Cursor ユーザールールが既定。
+- `git-*` スキルは GitBucket API・本リポの命名/レビュー観点の補完。矛盾時はユーザー明示指示を優先。
+
 ## チケット
 
 | ID | 題名 | 種別 | 状態 | 優先度 | 作成日 |
 |----|------|------|------|--------|--------|
-| 2 | チケット駆動開発用AIエージェントスキル作成 | 機能 | 新規 | 通常 | 2026-07-28 |
+| 2 | チケット駆動開発用AIエージェントスキル作成 | 機能 | 進行中 | 通常 | 2026-07-28 |
 
 ## ワークフロー
 
