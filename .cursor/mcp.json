@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "redmine": {
+      "command": "npx",
+      "args": ["-y", "@pavelsmith/redmine-mcp"],
+      "env": {
+        "REDMINE_URL": "${env:REDMINE_URL}",
+        "REDMINE_API_KEY": "${env:REDMINE_API_KEY}"
+      },
+      "envFile": "${workspaceFolder}/.env"
+    }
+  }
+}
