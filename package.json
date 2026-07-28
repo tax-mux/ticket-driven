@@ -1,0 +1,11 @@
+{
+  "name": "ticket-driven",
+  "private": true,
+  "description": "Helpers for ticket-driven skill kit",
+  "scripts": {
+    "validate:opencode": "node tools/validate-opencode.mjs"
+  },
+  "dependencies": {
+    "jsonc-parser": "^3.3.1"
+  }
+}

@@ -8,15 +8,29 @@ Redmine チケットを起点に開発タスクを駆動する。
 
 ## スキルトリガー
 
+正本は `skills/<name>/SKILL.md`（詳細は `skills/navigation-protocol.md`）。
+
 | 生発音（ローマ字） | パス |
 |---|---|
-| ticketcreate | skills/ticket-create.md |
-| ticketstatus | skills/ticket-status.md |
-| ticketupdate | skills/ticket-update.md |
-| ticketlist | skills/ticket-list.md |
-| ticketrelation | skills/ticket-relation.md |
-| ticketrefine | skills/ticket-refine.md |
-| ticketsplit | skills/ticket-split.md |
+| ticketcreate | skills/ticket-create/SKILL.md |
+| ticketstatus | skills/ticket-status/SKILL.md |
+| ticketupdate | skills/ticket-update/SKILL.md |
+| ticketlist | skills/ticket-list/SKILL.md |
+| ticketrelation | skills/ticket-relation/SKILL.md |
+| ticketrefine | skills/ticket-refine/SKILL.md |
+| ticketsplit | skills/ticket-split/SKILL.md |
+
+## Redmine MCP 呼び出しの約束（@pavelsmith/redmine-mcp）
+
+- `issue` / `relation` などは **JSONオブジェクト**。文字列化した JSON を渡さない
+- `issue_id` などは **文字列**（`"42"`）
+- `get` の `include` は **文字列配列**（`["journals","attachments"]`）
+- コメント追加は `action=add_note` + `notes`（update の `issue.notes` でも可）
+- MCP 非接続時は `./tools/redmine_helper.sh` を使う
+
+## Git スキルについて
+
+コミット／PR の安全手順は Cursor ユーザールールが既定。`git-*` は GitBucket API や本リポ規約の補完。
 
 ## ワークフロー
 
@@ -40,17 +54,23 @@ Redmine チケットを起点に開発タスクを駆動する。
 
 ユーザーがチケット番号（例: `#42`）を指定した場合:
 
+```json
+{
+  "action": "get",
+  "issue_id": "42",
+  "include": ["journals", "attachments"]
+}
 ```
-redmine_issues action=get issue_id="42" include="journals,attachments"
-```
+ツール: `redmine_issues`（`include` は文字列配列。`issue` 引数は常にオブジェクト）
 
 ### 2. 関連チケットの把握
 
 親チケットが指定された場合、子チケットも自動的に連携対象とする。
 
+```json
+{ "action": "list", "issue_id": "42" }
 ```
-redmine_issue_relations action=list issue_id="42"
-```
+ツール: `redmine_issue_relations`
 
 - 子チケットがある場合は一覧を取得し、全てを処理対象とする
 - 子チケットが未着手の場合は着手する
@@ -88,17 +108,23 @@ redmine_issue_relations action=list issue_id="42"
 - チケットの要件に基づき実装
 - 進捗は随時ジャーナルに記録
 
+```json
+{
+  "action": "add_note",
+  "issue_id": "42",
+  "notes": "実装中: 〇〇機能"
+}
 ```
-redmine_issues action=add_note issue_id="42" notes="実装中: 〇〇機能"
-```
+ツール: `redmine_issues`
 
 ### 5. ステータス遷移
 
 Redmine のステータス一覧を取得して適切な遷移を行う:
 
+```json
+{ "action": "list" }
 ```
-redmine_issue_statuses action=list
-```
+ツール: `redmine_issue_statuses`
 
 標準遷移:
 
@@ -115,9 +141,14 @@ New → In Progress → Resolved → Closed
 
 完了前に説明を更新:
 
+```json
+{
+  "action": "update",
+  "issue_id": "42",
+  "issue": { "description": "{更新後の説明}" }
+}
 ```
-redmine_issues action=update issue_id="42" issue="{\"description\": \"{更新後の説明}\"}"
-```
+ツール: `redmine_issues`
 
 **必須項目**:
 - リモートリポジトリURL
@@ -129,9 +160,14 @@ redmine_issues action=update issue_id="42" issue="{\"description\": \"{更新後
 
 説明更新後、ステータスを解決に変更:
 
+```json
+{
+  "action": "update",
+  "issue_id": "42",
+  "issue": { "status_id": 3 }
+}
 ```
-redmine_issues action=update issue_id="42" issue="{\"status_id\": <ResolvedのID>}"
-```
+ツール: `redmine_issues`（本環境の解決 ID は `3`。必ず statuses list で確認）
 
 **完了チェックリスト**:
 - [ ] 説明にリポジトリURLが記載

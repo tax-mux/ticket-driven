@@ -50,45 +50,59 @@ description: 親チケットを子チケットに分割し、作業を細分化�
 
 ### 2. 子チケット作成
 
+```json
+{
+  "action": "create",
+  "issue": {
+    "project_id": "{プロジェクトID}",
+    "parent_issue_id": 42,
+    "tracker_id": 2,
+    "subject": "{タイトル}",
+    "description": "{説明}",
+    "priority_id": 2
+  }
+}
 ```
-redmine_issues action=create issue="{
-  \\\"project_id\\\": \\\"{プロジェクトID}\\\",
-  \\\"parent_issue_id\\\": {親チケットID},
-  \\\"tracker_id\\\": {トラッカーID},
-  \\\"subject\\\": \\\"{タイトル}\\\",
-  \\\"description\\\": \\\"{説明}\\\",
-  \\\"priority_id\\\": {優先度ID}
-}"
-```
+ツール: `redmine_issues`
 
 ### 3. 関連付け
 
 子チケット同士・親チケットとの関連を確認:
 
+```json
+{
+  "action": "create",
+  "issue_id": "{ID}",
+  "relation": {
+    "issue_to_id": 43,
+    "relation_type": "relates"
+  }
+}
 ```
-redmine_issue_relations action=create issue_id="{ID}" relation="{
-  \\\"issue_to_id\\\": {関連チケットID},
-  \\\"relation_type\\\": \\\"depends on\\\"
-}"
-```
+ツール: `redmine_issue_relations`
 
 ### 4. 親チケット更新
 
 分割内容を親チケットのジャーナルに記録:
 
-```
-redmine_issues action=add_note issue_id="{親ID}" notes="チケットを分割:
-- #{子1ID}: {タイトル1}
-- #{子2ID}: {タイトル2}
-- #{子3ID}: {タイトル3}"
+```json
+{
+  "action": "add_note",
+  "issue_id": "{親ID}",
+  "notes": "チケットを分割:\n- #{子1ID}: {タイトル1}\n- #{子2ID}: {タイトル2}"
+}
 ```
 
 ### 5. 親チケットの進捗
 
 子チケットの完了率に応じて進捗率を更新:
 
-```
-redmine_issues action=update issue_id="{親ID}" issue="{\\\"done_ratio\\\": 33}"
+```json
+{
+  "action": "update",
+  "issue_id": "{親ID}",
+  "issue": { "done_ratio": 33 }
+}
 ```
 
 ## 子チケット作成テンプレート

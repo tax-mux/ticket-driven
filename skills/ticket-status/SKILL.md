@@ -13,13 +13,22 @@ description: チケットのステータスに応じた対応手順。ステー�
 1. チケット内容を確認
 2. 要件を分解
 3. 担当者確認
-4. ステータスIDを取得: `redmine_issue_statuses action=list`
-5. ステータスを `In Progress` に変更
+4. ステータスIDを取得: `redmine_issue_statuses` `action=list`
+5. ステータスを `進行中` に変更
 
+```json
+{ "action": "list" }
 ```
-redmine_issue_statuses action=list
-redmine_issues action=update issue_id=\"{ID}\" issue=\"{\\\"status_id\\\": {IN_PROGRESS_ID}}\"
+ツール: `redmine_issue_statuses`
+
+```json
+{
+  "action": "update",
+  "issue_id": "{ID}",
+  "issue": { "status_id": 2 }
+}
 ```
+ツール: `redmine_issues`（本環境の進行中 ID は `2`。必ず `list` で確認）
 
 ### In Progress（進行中）
 
@@ -31,15 +40,15 @@ redmine_issues action=update issue_id=\"{ID}\" issue=\"{\\\"status_id\\\": {IN_P
 
 1. 指摘内容を確認
 2. 修正実施
-3. ステータスを `In Progress` に再変更
+3. ステータスを `進行中` に再変更
 
-### Resolved（完了）
+### Resolved（解決）
 
 1. テスト・検証
 2. 要件充足確認
 3. 完了報告をジャーナルに追加
 
-### Closed（クローズ）
+### Closed（終了）
 
 - 完了確認済み。特にアクション不要。
 
