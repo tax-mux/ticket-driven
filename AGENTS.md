@@ -11,7 +11,7 @@
   - 新規チケット作成時はカレントディレクトリに対応するプロジェクトを優先
   - 判断が迷う場合は `ticket-refine` または `ticket-driven` スキルでワークフロー検証
 - `issue_id` 未確定のままコード変更・コミット・PR しない
-- 日常は最小フローで **自動完走**: 着手ノート → 実装 → 完了ノート → Resolved
+- 日常は最小フローで **自動完走**: 着手ノート → 実装 → code-refactor 検討 → 完了ノート → Resolved
 - 着手時に完了条件が検証不能なら、確認せず `ticket-refine` してから実装（短いが十分な DoD なら refine しない）
 - 分割は 1 PR に収まらないとき。詳細は `skills/ticket-driven/SKILL.md`
 
