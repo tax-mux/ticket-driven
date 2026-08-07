@@ -37,13 +37,8 @@
       }
     }
   },
-  // OpenCode は skills/*/SKILL.md を自動スキャンする。
-  // paths は追加のスキル親ディレクトリ（正本: リポジトリルートの skills/）。
-  "skills": {
-    "paths": [
-      "./skills"
-    ]
-  },
+  // スキル正本は ~/.agents/skills。相対 "./skills" を paths に足すと
+  // グローバル探索と二重登録／cwd ごとの path not found の原因になる。
   "mcp": {
     "redmine": {
       "type": "local",
