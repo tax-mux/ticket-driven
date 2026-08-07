@@ -37,78 +37,13 @@
       }
     }
   },
-  "skills": [
-    {
-      "name": "ticket-driven",
-      "description": "チケット駆動開発の全体ワークフロー。Redmine チケットを起点に開発タスクを駆動する。",
-      "path": "./skills/ticket-driven/SKILL.md"
-    },
-    {
-      "name": "ticket-create",
-      "description": "Redmine に新しいチケットを作成する。必須/任意フィールド、種別別テンプレート付き。",
-      "path": "./skills/ticket-create/SKILL.md"
-    },
-    {
-      "name": "ticket-list",
-      "description": "条件に合う Redmine チケットを取得する。ステータス/担当者/トラッカー別フィルタ、ページネーション対応。",
-      "path": "./skills/ticket-list/SKILL.md"
-    },
-    {
-      "name": "ticket-refine",
-      "description": "Redmine チケットの内容を精緻化し、開発可能な状態に整える。要件分解・完了条件明確化。",
-      "path": "./skills/ticket-refine/SKILL.md"
-    },
-    {
-      "name": "ticket-relation",
-      "description": "Redmine チケット間の依存関係・関連付けを管理する。関連種別追加・削除・一覧取得。",
-      "path": "./skills/ticket-relation/SKILL.md"
-    },
-    {
-      "name": "ticket-split",
-      "description": "親チケットを子チケットに分割し、作業を細分化する。分割方針・テンプレート・関連付け手順付き。",
-      "path": "./skills/ticket-split/SKILL.md"
-    },
-    {
-      "name": "ticket-status",
-      "description": "チケットのステータスに応じた対応手順。ステータス別アクションと優先度別対応を含む。",
-      "path": "./skills/ticket-status/SKILL.md"
-    },
-    {
-      "name": "ticket-update",
-      "description": "既存 Redmine チケットの状態・情報を更新する。進捗率・担当者・ステータス変更を含む。",
-      "path": "./skills/ticket-update/SKILL.md"
-    },
-    {
-      "name": "git-commit",
-      "description": "Git コミット。コミットメッセージ生成、ステージング、hooks 対応。",
-      "path": "./skills/git-commit/SKILL.md"
-    },
-    {
-      "name": "git-pr",
-      "description": "PR 作成。gh cliまたはGitBucket API対応。diff 確認、タイトル/本文生成、本文生成必須。",
-      "path": "./skills/git-pr/SKILL.md"
-    },
-    {
-      "name": "git-branch",
-      "description": "ブランチ操作。分岐、マージ、名付け規則。",
-      "path": "./skills/git-branch/SKILL.md"
-    },
-    {
-      "name": "git-rebase",
-      "description": "リベース操作。衝突解決、interactive リベース。",
-      "path": "./skills/git-rebase/SKILL.md"
-    },
-    {
-      "name": "git-diff",
-      "description": "diff 確認・レビュー支援。",
-      "path": "./skills/git-diff/SKILL.md"
-    },
-    {
-      "name": "git-log",
-      "description": "ログ検索・コミット履歴取得。",
-      "path": "./skills/git-log/SKILL.md"
-    }
-  ],
+  // OpenCode は skills/*/SKILL.md を自動スキャンする。
+  // paths は追加のスキル親ディレクトリ（正本: リポジトリルートの skills/）。
+  "skills": {
+    "paths": [
+      "./skills"
+    ]
+  },
   "mcp": {
     "redmine": {
       "type": "local",

@@ -6,6 +6,11 @@ description: Redmineチケット間の依存関係・関連付けを管理する
 
 チケット間の依存関係・関連付けを管理する。
 
+## MCP 約束（この環境）
+
+- `redmine_issue_relations` ツールは無い。すべて **`redmine_api_request`**
+- `relation` / `body` はオブジェクト
+
 ## 関連種別
 
 | 関係 | 説明 |
@@ -26,24 +31,26 @@ description: Redmineチケット間の依存関係・関連付けを管理する
 
 ```json
 {
-  "action": "create",
-  "issue_id": "{ID}",
-  "relation": {
-    "issue_to_id": 43,
-    "relation_type": "relates",
-    "delay": 0
+  "method": "POST",
+  "path": "/issues/{ID}/relations.json",
+  "body": {
+    "relation": {
+      "issue_to_id": 43,
+      "relation_type": "relates",
+      "delay": 0
+    }
   }
 }
 ```
 
-ツール: `redmine_issue_relations`（`relation` はオブジェクト）
+ツール: `redmine_api_request`
 
 ## 関連付け削除
 
 ```json
 {
-  "action": "delete",
-  "relation_id": "{関係ID}"
+  "method": "DELETE",
+  "path": "/relations/{関係ID}.json"
 }
 ```
 
@@ -51,7 +58,10 @@ description: Redmineチケット間の依存関係・関連付けを管理する
 
 ```json
 {
-  "action": "list",
-  "issue_id": "{ID}"
+  "action": "get",
+  "issue_id": "{ID}",
+  "include": ["relations"]
 }
 ```
+
+ツール: `redmine_issues`（または `GET /issues/{ID}/relations.json`）
