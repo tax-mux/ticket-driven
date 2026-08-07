@@ -47,6 +47,7 @@
 | `git-rebase` | リベース操作 |
 | `git-diff` | diff確認・レビュー |
 | `git-log` | ログ検索 |
+| `code-refactor` | コードリファクタ（600行超分割・ネスト5超の浅化検討） |
 
 ### Git スキルと Cursor 標準ルール
 
