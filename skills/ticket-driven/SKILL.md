@@ -6,6 +6,67 @@ description: チケット駆動開発の全体ワークフロー。Redmineチケ
 
 Redmine チケットを起点に開発タスクを駆動する。
 
+## HARD GATE（最優先）
+
+次を満たすまで **コード変更・コミット・PR をしない**。
+
+1. `issue_id` がある（ユーザー指定 or `ticket-create` で作成）
+2. 完了条件が **検証可能**（例: `cargo test` 成功、特定ファイルに文言追加）
+3. **分割判定が済んでいる**（機能構成単位で子チケット作成済み、または分割不要と判定済み）
+4. 着手ジャーナル 1 行を書いた（実装するチケット＝子がある場合は **子** に書く）
+
+**自動精緻化（人手を待たない）**: 着手・実装要求の時点で 2 が満たせない場合、ユーザーに確認せず **先に `ticket-refine` を実行**し、description を最小テンプレで更新してから次へ進む。短い説明でも完了条件が検証可能なら refine しない。
+
+**自動分割（精緻化の直後）**: 精緻化が済んだ、または不要だった場合、実装の前に必ず **機能構成単位で `ticket-split` を判定・実行**する。分割後は **子チケットを作業単位**とし、親は進捗・統合のハブにする。単一の機能構成に収まるときだけ分割をスキップする。
+
+refine 後も DoD が書けない／外部情報が必須 → 質問は **最大3つ**に絞る。それ以外は止めず完走する。
+
+例外: 質問・設計のみ／読み取り調査のみ／ユーザーが「チケット不要」と明示。
+
+起動フレーズ例: `#42 着手` / `#42 レビューして`
+
+## 日常最小フロー（デフォルト・自動完走）
+
+大きい儀式はしない。途中で許可を求めず、ブロック要因がなければ最後まで進める。
+
+```
+get(#N)
+ → DoD 不能なら ticket-refine（自動）
+ → 精緻化済 or 不要 → ticket-split（機能構成単位・確認不要）
+     ├ 分割する → 子を作成し、子ごとに着手〜完了。親は done_ratio / 最終 Resolved
+     └ 分割不要（単一機能構成）→ 当該チケットで着手〜完了
+ → 着手ノート + In Progress
+ → 実装 + 完了条件の検証
+ → 完了ノート + Resolved
+ → ユーザーがコミット/PR を求めたらそのときだけ
+```
+
+| タイミング | ジャーナル |
+|-----------|------------|
+| 精緻化（自動時） | `精緻化: {要約}`（refine 側） |
+| 分割 | `チケットを分割: ...`（split 側） |
+| 着手 | `着手: {概要}`（実装チケット＝子優先） |
+| 完了 | `完了: {概要} — {検証結果}` |
+
+進捗ジャーナルの連投は不要。詰まったときだけ追記。
+
+## いつ重い手順を使うか（自動判定）
+
+| 条件 | 動作 |
+|------|------|
+| 完了条件が検証不能／説明が空で DoD 不能 | **自動で** `ticket-refine`（確認不要） |
+| 精緻化済、または精緻化不要（DoD 検証可能） | **自動で** `ticket-split` を判定。機能構成が2つ以上なら **子を作成してから**作業（確認不要） |
+| すでに子チケットがある | 再分割しない。未完了の子を作業単位にする |
+| 依存の明示が必要 | `ticket-relation`（`precedes` / `blocks` 等） |
+
+説明が短くても DoD が検証可能なら refine はしない。ただし **分割判定はスキップしない**（単一機能なら「分割不要」と判定して進む）。
+
+### 分割後の作業順
+
+1. 依存なし（先行）の子から着手する
+2. 子を Resolved にするたびに親の `done_ratio` を更新する
+3. すべての子が Resolved になったら親を Resolved にする（親に完了ノート）
+
 ## スキルトリガー
 
 正本は `skills/<name>/SKILL.md`（詳細は `skills/navigation-protocol.md`）。
@@ -20,242 +81,75 @@ Redmine チケットを起点に開発タスクを駆動する。
 | ticketrefine | skills/ticket-refine/SKILL.md |
 | ticketsplit | skills/ticket-split/SKILL.md |
 
-## Redmine MCP 呼び出しの約束（@pavelsmith/redmine-mcp）
+## Redmine MCP 呼び出しの約束（この環境）
 
-- `issue` / `relation` などは **JSONオブジェクト**。文字列化した JSON を渡さない
-- `issue_id` などは **文字列**（`"42"`）
+- `redmine_issues` は **`list` / `get` のみ**。作成・更新・ノートは **`redmine_api_request`**
+- `issue` / `relation` / `body` / `query` は **オブジェクト**。JSON 文字列にしない
+- `issue_id` は文字列（`"42"`）。誤って `id` キーを使わない
 - `get` の `include` は **文字列配列**（`["journals","attachments"]`）
-- コメント追加は `action=add_note` + `notes`（update の `issue.notes` でも可）
-- MCP 非接続時は `./tools/redmine_helper.sh` を使う
+- list のフィルタは **`query` オブジェクト**へ
+- 認証トークンは渡さない。MCP 非接続時は `./tools/redmine_helper.sh`（`REDMINE_API_KEY` 必須）
+- HTTP 不通時は Redmine / DB コンテナ起動を先に試す
 
-## Git スキルについて
+## ステータス（本環境の目安）
 
-コミット／PR の安全手順は Cursor ユーザールールが既定。`git-*` は GitBucket API や本リポ規約の補完。
+必ず `GET /issue_statuses.json` で確認すること。
 
-## ワークフロー
+| 意味 | よくある ID |
+|------|-------------|
+| 新規 | 1 |
+| 進行中 | 2 |
+| 解決 | 3 |
 
-### 0. 着手前チェックリスト
+標準遷移: `New → In Progress → Resolved → Closed`（Feedback 経由あり）
 
-チケット着手前に必ず確認:
+## 最小操作例
 
-- [ ] リモートリポジトリが確保されているか（`git remote -v`）
-- [ ] 概要・説明が明確か（null または曖昧なら精緻化を優先）
-- [ ] 完了条件が定義されているか
-- [ ] 実装方針が具体化されているか
-- [ ] 分割が必要な.large チケットでないか
-
-#### リモートリポジトリ未確保の場合
-
-1. チケットのコメントに「リポジトリ未作成」を登録
-2. チケットを保留にする
-3. リポジトリ作成後に再開
-
-### 1. チケット取得
-
-ユーザーがチケット番号（例: `#42`）を指定した場合:
+取得:
 
 ```json
-{
-  "action": "get",
-  "issue_id": "42",
-  "include": ["journals", "attachments"]
-}
+{ "action": "get", "issue_id": "42", "include": ["journals", "children"] }
 ```
-ツール: `redmine_issues`（`include` は文字列配列。`issue` 引数は常にオブジェクト）
 
-### 2. 関連チケットの把握
-
-親チケットが指定された場合、子チケットも自動的に連携対象とする。
-
-```json
-{ "action": "list", "issue_id": "42" }
-```
-ツール: `redmine_issue_relations`
-
-- 子チケットがある場合は一覧を取得し、全てを処理対象とする
-- 子チケットが未着手の場合は着手する
-
-### 3. 内容確認と精緻化
-
-概要、説明、担当者、ステータス、優先度をチェック:
-
-| ステータス | 対応 |
-|-----------|------|
-| 新規 | 精緻化 → 分割（必要に応じて）→ 着手 |
-| 進行中 | 継続 |
-| 解決 | 検証 |
-| 閉鎖 | 確認 |
-
-#### 3.1 精緻化（説明が不足の場合）
-
-`ticket-refine` スキルを適用:
-
-- 背景・目的を明確化
-- 機能要件・非機能要件を列挙
-- 完了条件を具体化
-- 実装方針を提案
-
-#### 3.2 細分化（範囲が広い場合）
-
-`ticket-split` スキルを適用:
-
-- 機能単位で独立した子チケットに分割
-- 依存関係を明確化
-- 各チケットの完了条件を定義
-
-### 4. 実装
-
-- チケットの要件に基づき実装
-- 進捗は随時ジャーナルに記録
-
-```json
-{
-  "action": "add_note",
-  "issue_id": "42",
-  "notes": "実装中: 〇〇機能"
-}
-```
 ツール: `redmine_issues`
 
-### 5. ステータス遷移
-
-Redmine のステータス一覧を取得して適切な遷移を行う:
-
-```json
-{ "action": "list" }
-```
-ツール: `redmine_issue_statuses`
-
-標準遷移:
-
-```
-New → In Progress → Resolved → Closed
-                      ↘ Feedback → In Progress → ...
-```
-
-- `In Progress` に変更: 開発着手
-- `Resolved` に変更: 実装完了、テスト通過
-- `Closed` に変更: 検証完了
-
-### 6. 説明更新
-
-完了前に説明を更新:
+着手（ノート + 進行中）:
 
 ```json
 {
-  "action": "update",
-  "issue_id": "42",
-  "issue": { "description": "{更新後の説明}" }
+  "method": "PUT",
+  "path": "/issues/42.json",
+  "body": { "issue": { "notes": "着手: APIリトライ", "status_id": 2 } }
 }
 ```
-ツール: `redmine_issues`
 
-**必須項目**:
-- リモートリポジトリURL
-- 完了条件
-- テスト範囲
-- 影響範囲
-
-### 7. 完了報告
-
-説明更新後、ステータスを解決に変更:
+完了:
 
 ```json
 {
-  "action": "update",
-  "issue_id": "42",
-  "issue": { "status_id": 3 }
+  "method": "PUT",
+  "path": "/issues/42.json",
+  "body": { "issue": { "notes": "完了: リトライ実装 — cargo test 成功", "status_id": 3 } }
 }
 ```
-ツール: `redmine_issues`（本環境の解決 ID は `3`。必ず statuses list で確認）
 
-**完了チェックリスト**:
-- [ ] 説明にリポジトリURLが記載
-- [ ] 完了条件が更新
-- [ ] テスト範囲が記載
-- [ ] ジャーナルに進捗記録
+ツール: `redmine_api_request`
 
-### 8. コミットとPR
+## 完了条件の書き方
 
-作業完了後、必ずコミットしてPRを作成する。
+悪い例: 「品質を高める」「堅牢にする」  
+良い例: 「`scripts/ci.sh` が通る」「`brave_search.rs` に 429 リトライが入り最大3回」
 
-#### 8.1 コミット
+## コミットと PR
 
-```
-git status
-git diff
-git log -5 --oneline
-```
-
-変更をステージング:
-
-```
-git add {ファイルパス}
-```
-
-コミットメッセージ:
-
-```
-git commit -m "$(cat <<'EOF'
-{type}: {概要}
-
-{詳細（必要に応じて）}
-
-EOF
-)"
-```
-
-type: feat, fix, docs, style, refactor, test, chore
-
-#### 8.2 PR作成
-
-```
-git push -u origin HEAD
-gh pr create --title "{タイトル}" --body "$(cat <<'EOF'
-## 概要
-<1-3行で概要>
-
-## 変更内容
-- {変更1}
-- {変更2}
-
-## テスト
-- [ ] {テスト1}
-- [ ] {テスト2}
-
-## 備考
-{補足情報}
-
-EOF
-)"
-```
-
-**必須**:
-- リモートリポジトリURLをPR本文に記載
-- テスト範囲を記載
-- 関連チケットを記載（例: `Refs: #42`）
+ユーザーが明示したとき、またはチケット完了条件に含まれるときだけ行う。  
+安全手順は Cursor ユーザールール／`git-*` スキルに従う。PR 本文に `Refs: #N` を入れる（子の場合は子 ID。親にも触れたら親も列挙可）。
 
 ## Redmine 主要ツール
 
 | ツール | 用途 |
 |---|---|
-| `redmine_issues` | チケットの CRUD |
-| `redmine_issue_journals` | ジャーナル（コメント） |
-| `redmine_issue_relations` | チケット関連付け |
-| `redmine_issue_statuses` | ステータス一覧 |
-| `redmine_users` | ユーザー情報 |
-| `redmine_projects` | プロジェクト情報 |
-| `redmine_trackers` | トラッカー一覧 |
-| `redmine_paginated_request` | 全ページ取得 |
-| `redmine_search` | 全文検索 |
-| `redmine_upload_file` | ファイルアップロード |
-
-## ジャーナル記録テンプレート
-
-| タイミング | フォーマット |
-|-----------|-------------|
-| 着手 | `着手: {概要}` |
-| 進捗 | `進捗中: {具体的な作業内容}（{進捗率}%）` |
-| 完了 | `完了: {概要} — {検証結果}` |
-| 分割 | `分割: #{子ID1} {タイトル1}, #{子ID2} {タイトル2}` |
-| 精緻化 | `精緻化: {変更内容の要約}` |
+| `redmine_issues` | list / get のみ |
+| `redmine_api_request` | 作成・更新・ノート・statuses・relations 等の REST |
+| `redmine_current_user` | 認証ユーザー確認 |
+| `redmine_list_profiles` | プロファイル名一覧 |

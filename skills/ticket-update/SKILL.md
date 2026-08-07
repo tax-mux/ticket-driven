@@ -6,20 +6,29 @@ description: 既存Redmineチケットの状態・情報を更新する。進捗
 
 既存チケットの状態・情報を更新する。
 
+## MCP 約束（この環境）
+
+- 更新・ノートは **`redmine_api_request`** の `PUT /issues/{id}.json`
+- `issue_id` はパスに入れる（引数名 `id` は使わない）
+- `body.issue` はオブジェクト。JSON 文字列にしない
+- `redmine_issues` は **list / get のみ**
+
 ## 基本的な更新
 
 ```json
 {
-  "action": "update",
-  "issue_id": "{ID}",
-  "issue": {
-    "status_id": 2,
-    "notes": "コメント"
+  "method": "PUT",
+  "path": "/issues/42.json",
+  "body": {
+    "issue": {
+      "status_id": 2,
+      "notes": "コメント"
+    }
   }
 }
 ```
 
-ツール: `redmine_issues`（`issue` / `issue_id` はオブジェクトと文字列。エスケープ済みJSON文字列にしない）
+ツール: `redmine_api_request`（`42` を実 ID に置換）
 
 ## 更新可能なフィールド
 
@@ -46,7 +55,7 @@ description: 既存Redmineチケットの状態・情報を更新する。進捗
 2. **作業区切りごとにジャーナルにコメント**
 3. **完了前に説明を更新（完了条件・テスト範囲）**
 4. **説明が更新されてから解決**
-5. **作業完了後、必ずコミットしてPRを作成**
+5. **作業完了後、必ずコミットしてPRを作成**（ユーザー依頼時／完了条件に含まれるとき）
 
 ### 説明テンプレート
 
@@ -77,9 +86,9 @@ description: 既存Redmineチケットの状態・情報を更新する。進捗
 
 ```json
 {
-  "action": "update",
-  "issue_id": "{ID}",
-  "issue": { "description": "{更新後の説明}" }
+  "method": "PUT",
+  "path": "/issues/{ID}.json",
+  "body": { "issue": { "description": "{更新後の説明}" } }
 }
 ```
 
@@ -89,16 +98,16 @@ description: 既存Redmineチケットの状態・情報を更新する。進捗
 - [ ] 完了条件が更新
 - [ ] テスト範囲が記載
 - [ ] ジャーナルに進捗記録
-- [ ] コミット済み
-- [ ] PR作成済み
+- [ ] コミット済み（依頼時）
+- [ ] PR作成済み（依頼時）
 
 ## 進捗率更新
 
 ```json
 {
-  "action": "update",
-  "issue_id": "{ID}",
-  "issue": { "done_ratio": 50 }
+  "method": "PUT",
+  "path": "/issues/{ID}.json",
+  "body": { "issue": { "done_ratio": 50 } }
 }
 ```
 
@@ -106,9 +115,9 @@ description: 既存Redmineチケットの状態・情報を更新する。進捗
 
 ```json
 {
-  "action": "update",
-  "issue_id": "{ID}",
-  "issue": { "assigned_to_id": 1 }
+  "method": "PUT",
+  "path": "/issues/{ID}.json",
+  "body": { "issue": { "assigned_to_id": 1 } }
 }
 ```
 
@@ -116,9 +125,9 @@ description: 既存Redmineチケットの状態・情報を更新する。進捗
 
 ```json
 {
-  "action": "update",
-  "issue_id": "{ID}",
-  "issue": { "status_id": 3 }
+  "method": "PUT",
+  "path": "/issues/{ID}.json",
+  "body": { "issue": { "status_id": 3 } }
 }
 ```
 
@@ -126,8 +135,8 @@ description: 既存Redmineチケットの状態・情報を更新する。進捗
 
 ```json
 {
-  "action": "add_note",
-  "issue_id": "{ID}",
-  "notes": "進捗中: ..."
+  "method": "PUT",
+  "path": "/issues/{ID}.json",
+  "body": { "issue": { "notes": "進捗中: ..." } }
 }
 ```

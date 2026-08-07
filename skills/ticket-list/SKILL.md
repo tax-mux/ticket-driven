@@ -6,29 +6,25 @@ description: 条件に合うRedmineチケットを取得する。ステータス
 
 条件に合うチケットを取得する。
 
-## 全件取得（ページネーション対応）
+## MCP 約束（この環境）
 
-```json
-{
-  "path": "/issues.json",
-  "query": { "project_id": "{プロジェクト}" },
-  "limit": 100
-}
-```
-
-ツール: `redmine_paginated_request`
+- 一覧は **`redmine_issues`** の `action: "list"`
+- フィルタはトップレベルではなく **`query` オブジェクト**
+- `include` が必要な詳細取得は `get`（配列）。list の include 文字列は使わない
+- ページをまたぐ大量取得は `redmine_api_request` で `offset` / `limit` を回す（`redmine_paginated_request` は無い）
 
 ## 条件指定（`redmine_issues`）
-
-`list` ではフィルタをトップレベルに置いても、`query` オブジェクトにまとめてもよい。
 
 ### ステータス別
 
 ```json
 {
   "action": "list",
-  "status_id": "open",
-  "project_id": "{プロジェクト}"
+  "limit": 25,
+  "query": {
+    "status_id": "open",
+    "project_id": "{プロジェクト}"
+  }
 }
 ```
 
@@ -37,8 +33,10 @@ description: 条件に合うRedmineチケットを取得する。ステータス
 ```json
 {
   "action": "list",
-  "assigned_to_id": "{ユーザーID}",
-  "project_id": "{プロジェクト}"
+  "query": {
+    "assigned_to_id": "{ユーザーID}",
+    "project_id": "{プロジェクト}"
+  }
 }
 ```
 
@@ -47,10 +45,29 @@ description: 条件に合うRedmineチケットを取得する。ステータス
 ```json
 {
   "action": "list",
-  "tracker_id": "{トラッカーID}",
-  "project_id": "{プロジェクト}"
+  "query": {
+    "tracker_id": "{トラッカーID}",
+    "project_id": "{プロジェクト}"
+  }
 }
 ```
+
+## ページ送り（大量）
+
+```json
+{
+  "method": "GET",
+  "path": "/issues.json",
+  "query": {
+    "project_id": "{プロジェクト}",
+    "status_id": "open",
+    "limit": "100",
+    "offset": "0"
+  }
+}
+```
+
+ツール: `redmine_api_request`（`query` の値は文字列）
 
 ## 主要クエリパラメータ
 
@@ -63,14 +80,15 @@ description: 条件に合うRedmineチケットを取得する。ステータス
 | `category_id` | カテゴリ |
 | `priority_id` | 優先度 |
 | `cf_1` | カスタムフィールド（ID） |
-| `include` | 含む情報（journals, watchers, children）※カンマ区切り文字列 |
 
-## 含む情報
+## 詳細（journals 等）
 
 ```json
 {
-  "action": "list",
-  "status_id": "open",
-  "include": "journals,watchers"
+  "action": "get",
+  "issue_id": "42",
+  "include": ["journals", "watchers", "children"]
 }
 ```
+
+ツール: `redmine_issues`
