@@ -20,3 +20,4 @@
 | gitrebase | skills/git-rebase/SKILL.md |
 | gitdiff | skills/git-diff/SKILL.md |
 | gitlog | skills/git-log/SKILL.md |
+| coderefactor | skills/code-refactor/SKILL.md |
