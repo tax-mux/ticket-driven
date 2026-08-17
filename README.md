@@ -40,7 +40,22 @@ export REDMINE_API_KEY=your_key
   - `cp .env.example .env` してキーを埋める（`.env` は gitignore）
   - 反映には Cursor のウィンドウ再読み込みが必要
 
-### 5. 検証
+### 5. OpenCode / Hermes
+
+正本は `skills/`。コピーを置かず、次へ symlink する。
+
+```bash
+./tools/sync-skill-links.sh
+```
+
+| ランタイム | 配置 |
+|------------|------|
+| OpenCode | `~/.agents/skills/<name>` |
+| Hermes | `~/.hermes/skills/software-development/<name>` |
+
+反映には OpenCode / Hermes の再起動が必要な場合あり。
+
+### 6. 検証
 
 ```bash
 npm run validate:opencode

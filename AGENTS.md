@@ -35,12 +35,16 @@
 
 | 場所 | 用途 |
 |------|------|
-| `skills/<name>/SKILL.md` | 正本（OpenCode / Cursor 共通） |
+| `skills/<name>/SKILL.md` | 正本（Cursor / OpenCode / Hermes 共通） |
 | `.cursor/skills/<name>` | Cursor プロジェクトスキル（正本への symlink） |
-| `~/.cursor/skills/<name>` | 個人グローバル（任意・正本への symlink） |
+| `~/.cursor/skills/<name>` | Cursor 個人グローバル（正本への symlink） |
+| `~/.agents/skills/<name>` | OpenCode 既定探索（正本への symlink。コピー禁止） |
+| `~/.hermes/skills/software-development/<name>` | Hermes（正本への symlink。コピー禁止） |
 | `.opencode/opencode.jsonc` | OpenCode 登録（gitignore。example からコピー） |
 | `.cursor/mcp.json` | Cursor MCP（Redmine / MemPalace / TelosPVL）。秘密は `.env`） |
 | `.env` | Cursor MCP 用秘密（gitignore。`.env.example` からコピー） |
+
+コピーが残ったら `./tools/sync-skill-links.sh` で正本リンクに戻す。
 
 マッピング: `skills/navigation-protocol.md`
 
