@@ -57,7 +57,7 @@ npm run validate:opencode
 | `ticket-driven` | チケット駆動開発の全体ワークフロー |
 | `ticket-create` | チケット作成 |
 | `ticket-list` | チケット一覧取得 |
-| `ticket-refine` | チケット精緻化 |
+| `ticket-refine` | チケット精緻化（分割前の要件充足） |
 | `ticket-relation` | チケット関連付け |
 | `ticket-split` | チケット分割 |
 | `ticket-status` | ステータス別アクション |
