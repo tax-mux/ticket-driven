@@ -116,4 +116,4 @@ description: 実装中の予防的リファクタと、600行超分割・ネス�
 
 - 日常フローへの組み込み: `ticket-driven`
 - 差分確認: `git-diff`
-- 大きすぎて1 PR に収まらない作業分割: `ticket-split`
+- チケットの機能構成分割（精緻化の直後）: `ticket-driven` / `ticket-split`（ファイル分割と混ぜない）
