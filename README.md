@@ -55,6 +55,14 @@ export REDMINE_API_KEY=your_key
 
 反映には OpenCode / Hermes の再起動が必要な場合あり。
 
+Hermes の `~/.hermes/config.yaml` `agent.system_prompt` はスナップショット。現行 TelosPVL ID と INIT_BOOTSTRAP を取り込む:
+
+```bash
+hermes-sync-opencode-rules
+```
+
+再起動は自動化しない。ユーザーが Hermes を再起動する。
+
 ### 6. 検証
 
 ```bash
@@ -74,7 +82,7 @@ npm run validate:opencode
 | `ticket-list` | チケット一覧取得 |
 | `ticket-refine` | チケット精緻化（分割前の要件充足） |
 | `ticket-relation` | チケット関連付け |
-| `ticket-split` | チケット分割 |
+| `ticket-split` | チケット分割（機能構成→セッション完走） |
 | `ticket-status` | ステータス別アクション |
 | `ticket-update` | チケット更新 |
 
