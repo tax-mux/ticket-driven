@@ -16,7 +16,7 @@
 
 | いつ（迷いどころ） | 開くスキル | パス |
 |--------------------|------------|------|
-| `#N 着手` / 実装して / 完走して / チケット駆動で進める | ticket-driven | `skills/ticket-driven/SKILL.md` |
+| `#N 着手` / 実装して / 完走して / チケット駆動で進める / `#N 再開` / 状況把握して再開 | ticket-driven | `skills/ticket-driven/SKILL.md` |
 | 要件が薄い・命題を膨らませる・精緻化 | ticket-refine | `skills/ticket-refine/SKILL.md` |
 | 分割する？ / 子チケット / セッション完走サイズ | ticket-split | `skills/ticket-split/SKILL.md` |
 | 新規起票 | ticket-create | `skills/ticket-create/SKILL.md` |
@@ -37,6 +37,7 @@
 | 迷い | 答え |
 |------|------|
 | 精緻化と分割、どっち？ | 先に `ticket-refine`、直後に `ticket-driven` 経由で `ticket-split`（日常は `ticket-driven` 1本で両方走る） |
+| 再開はすぐ実装？ | しない。`ticket-driven` の `resume.md`：把握→サイズ→分割／再分割→子のみ |
 | create と driven？ | 起票だけなら `ticket-create`。実装まで含むなら `ticket-driven`（必要なら create を呼ぶ） |
 | update と driven？ | ノートやフィールドだけなら `ticket-update`。着手〜完了フローなら `ticket-driven` |
 | git-* を先に？ | チケット駆動中のコミット/PRはユーザー依頼時。手順は各 git-*。流れの親は `ticket-driven` |
