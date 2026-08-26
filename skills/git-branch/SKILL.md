@@ -6,7 +6,19 @@ description: ブランチ操作。分岐、マージ、名付け規則。
 
 Gitブランチの操作手順。
 
-## ブランチ名規則
+**常時読むのは本ファイルだけ。** 本文は目録の条件に合うファイルだけ開く。`sections/` をまとめて読まない。
+
+## 目録
+
+| 開く条件 | 読むファイル |
+|----------|----------------|
+| 作成・切替・一覧・削除のコマンド | `sections/commands.md` |
+| マージ・衝突解決 | `sections/merge.md` |
+| PR前チェック | `sections/pr-checklist.md` |
+
+## 概要
+
+### ブランチ名規則
 
 ```
 {種別}/{短縮タイトル}
@@ -22,53 +34,4 @@ Gitブランチの操作手順。
 
 例: `feature/user-list`, `fix/login-timeout`
 
-## ブランチ作成
-
-```
-git checkout -b {ブランチ名}
-```
-
-## ブランチ切り替え
-
-```
-git checkout {ブランチ名}
-```
-
-## ブランチ一覧
-
-```
-git branch -a
-```
-
-## マージ
-
-### feature → main
-
-```
-git checkout main
-git merge feature/{名前}
-```
-
-### 衝突解決
-
-1. 衝突ファイルを確認: `git status`
-2. 各ファイルを開いて解決
-3. 解決後: `git add {ファイル}`
-4. コミット: `git commit`
-
-## ブランチ削除
-
-```
-# ローカル
-git branch -d {ブランチ名}
-
-# リモート
-git push origin --delete {ブランチ名}
-```
-
-## プルリクエスト時のチェックリスト
-
-- [ ] mainにrebase済み
-- [ ] コンフリクトなし
-- [ ] テスト通過
-- [ ] コミットメッセージ確認
+作成・切替は `commands.md`。マージは `merge.md`。

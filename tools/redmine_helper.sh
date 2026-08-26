@@ -15,6 +15,7 @@ Commands:
   create   <json_file>             チケット作成（JSONファイル）
   update   <issue_id> <json_file>  チケット更新（JSONファイル）
   note     <issue_id> <text|->     コメント追加（文字列 or stdin）
+  attach   <issue_id> <file> [notes]  ファイル添付（スクショ等。MCP不可の代替）
   status                           ステータス一覧
   trackers                         トラッカー一覧
   users                            ユーザー一覧
@@ -31,6 +32,7 @@ Examples:
   $(basename "$0") update 42 ./patch.json
   $(basename "$0") note 42 '進捗中: API確認'
   echo '完了メモ' | $(basename "$0") note 42 -
+  $(basename "$0") attach 42 ./shot.png 'UI確認: 一覧表示'
 EOF
 }
 
@@ -112,6 +114,66 @@ case "$cmd" in
         # Redmine: notes are sent via issue update, not /journals.json
         payload="$(python3 -c 'import json,sys; print(json.dumps({"issue":{"notes":sys.stdin.read()}}))' <<<"$notes")"
         redmine_api PUT "/issues/${issue_id}.json" "$payload"
+        ;;
+    attach)
+        # MCP redmine_api_request は JSON のみ。バイナリはここ（または curl）で送る。
+        [ -n "${1:-}" ] && [ -f "${2:-}" ] || {
+            echo "Error: issue_id and existing file required" >&2
+            echo "Usage: $(basename "$0") attach <issue_id> <file> [notes]" >&2
+            exit 1
+        }
+        require_key
+        issue_id="$1"
+        file_path="$2"
+        notes="${3:-添付: $(basename "$file_path")}"
+        filename="$(basename "$file_path")"
+        # MIME 推定（file コマンドが無い環境向けに拡張子フォールバック）
+        content_type="$(file -b --mime-type "$file_path" 2>/dev/null || true)"
+        case "${content_type:-}" in
+            image/*|application/pdf|text/*|application/json) ;;
+            *)
+                case "${filename##*.}" in
+                    png) content_type="image/png" ;;
+                    jpg|jpeg) content_type="image/jpeg" ;;
+                    webp) content_type="image/webp" ;;
+                    gif) content_type="image/gif" ;;
+                    pdf) content_type="application/pdf" ;;
+                    *) content_type="application/octet-stream" ;;
+                esac
+                ;;
+        esac
+        upload_tmp="$(mktemp)"
+        upload_code="$(curl -sS -o "$upload_tmp" -w "%{http_code}" \
+            -X POST \
+            -H "X-Redmine-API-Key: ${REDMINE_KEY}" \
+            -H "Content-Type: application/octet-stream" \
+            --data-binary @"${file_path}" \
+            "${REDMINE_URL}/uploads.json?filename=$(python3 -c 'import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))' "$filename")")"
+        if [ "$upload_code" != "201" ]; then
+            echo "Error: upload HTTP ${upload_code}" >&2
+            cat "$upload_tmp" >&2
+            rm -f "$upload_tmp"
+            exit 1
+        fi
+        token="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["upload"]["token"])' <"$upload_tmp")"
+        rm -f "$upload_tmp"
+        [ -n "$token" ] || { echo "Error: empty upload token" >&2; exit 1; }
+        payload="$(python3 -c '
+import json, sys
+issue_id, token, filename, content_type, notes = sys.argv[1:6]
+print(json.dumps({
+  "issue": {
+    "notes": notes,
+    "uploads": [{
+      "token": token,
+      "filename": filename,
+      "content_type": content_type
+    }]
+  }
+}))
+' "$issue_id" "$token" "$filename" "$content_type" "$notes")"
+        redmine_api PUT "/issues/${issue_id}.json" "$payload"
+        echo "Attached ${filename} to #${issue_id}"
         ;;
     status)
         redmine_api GET "/issue_statuses.json"
