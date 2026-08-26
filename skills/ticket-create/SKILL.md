@@ -14,6 +14,7 @@ Redmine に新しいチケットを作成する手順。
 |----------|----------------|
 | POST 例・必須/任意フィールド | `sections/fields.md` |
 | Bug / Feature / Task の本文テンプレ | `sections/templates.md` |
+| 障害・エラー（現象確認→調査→解決の親） | `sections/bug-flow.md` |
 
 ## 概要
 
@@ -32,4 +33,4 @@ Redmine に新しいチケットを作成する手順。
 - [ ] 影響範囲
 - [ ] テスト範囲
 
-フィールドと POST 例は `fields.md`。種別テンプレは `templates.md`。起票後の充足は `ticket-refine`。
+フィールドと POST 例は `fields.md`。種別テンプレは `templates.md`。障害・失敗修正は `bug-flow.md`（分析し切ってから起票しない）。起票後の充足は `ticket-refine`。

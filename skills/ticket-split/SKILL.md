@@ -13,6 +13,7 @@ description: 親チケットを機能構成→セッション完走単位の子�
 | 開く条件 | 読むファイル |
 |----------|----------------|
 | 二段判定・再分割・分割しない判断の詳細 | `sections/policy.md` |
+| 障害・エラー（現象確認→調査→解決） | `sections/policy.md`（「障害・エラー修正の分割」） |
 | 子を実際に作る／関連付け／親ノートを書く | `sections/workflow.md` |
 | 子の description テンプレが必要 | `sections/templates.md` |
 | 分割の具体例が欲しい | `sections/examples.md` |
