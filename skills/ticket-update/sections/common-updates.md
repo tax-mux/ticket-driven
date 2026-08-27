@@ -1,12 +1,14 @@
 # よく使う更新例
 
+ツール: **`mcp-redmine_redmine_issues`**（`action: "update"`）。`issue_id` は文字列。
+
 ## 進捗率更新
 
 ```json
 {
-  "method": "PUT",
-  "path": "/issues/{ID}.json",
-  "body": { "issue": { "done_ratio": 50 } }
+  "action": "update",
+  "issue_id": "{ID}",
+  "done_ratio": 50
 }
 ```
 
@@ -14,9 +16,9 @@
 
 ```json
 {
-  "method": "PUT",
-  "path": "/issues/{ID}.json",
-  "body": { "issue": { "assigned_to_id": 1 } }
+  "action": "update",
+  "issue_id": "{ID}",
+  "assigned_to_id": 1
 }
 ```
 
@@ -24,9 +26,9 @@
 
 ```json
 {
-  "method": "PUT",
-  "path": "/issues/{ID}.json",
-  "body": { "issue": { "status_id": 3 } }
+  "action": "update",
+  "issue_id": "{ID}",
+  "status_id": 3
 }
 ```
 
@@ -34,8 +36,19 @@
 
 ```json
 {
-  "method": "PUT",
-  "path": "/issues/{ID}.json",
-  "body": { "issue": { "notes": "進捗中: ..." } }
+  "action": "update",
+  "issue_id": "{ID}",
+  "notes": "進捗中: ..."
+}
+```
+
+## 説明 + ノート
+
+```json
+{
+  "action": "update",
+  "issue_id": "{ID}",
+  "description": "{更新後の本文}",
+  "notes": "説明を精緻化"
 }
 ```

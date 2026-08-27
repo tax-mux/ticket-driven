@@ -12,10 +12,10 @@
 
 ## get / update
 
-取得（`redmine_issues`）:
+取得（`redmine_issues`）: **取得 Tier** は `ticket-driven` の `sections/ops.md` に従う。精緻化の初回は **Tier 1**（description のみ）。分割証拠や journal 履歴の確認が必要なときだけ Tier 3。
 
 ```json
-{ "action": "get", "issue_id": "{ID}", "include": ["journals"] }
+{ "action": "get", "issue_id": "{ID}" }
 ```
 
 説明更新 + ノート（`redmine_api_request`。`redmine_issues` に update/add_note は無い）:

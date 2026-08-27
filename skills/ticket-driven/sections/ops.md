@@ -7,10 +7,44 @@
 - `issue_id` は文字列（`"42"`）。誤って `id` キーを使わない
 - `get` の `include` は **文字列配列**（`["journals","attachments"]`）
 - list のフィルタは **`query` オブジェクト**へ
+- **一覧に description は無い**（件名で選び、本文は get）。`GET /issues.json` / `GET /projects.json` も同様
 - `redmine_api_request` の `path` は **相対パスのみ**（`/issues/42.json`）。フル URL は禁止
 - 認証トークンは渡さない。MCP 非接続時は `./tools/redmine_helper.sh`（`REDMINE_API_KEY` 必須）
 - **添付（画像等）**: MCP では不可。`./tools/redmine_helper.sh attach <id> <file> [notes]` を使う
 - HTTP 不通時は Redmine / DB コンテナ起動を先に試す
+
+## 取得 Tier（コンテキスト節約）
+
+Redmine get は **必要最小の `include`** に留める。一覧は常に Tier 0。
+
+| Tier | 操作 | `include` | 使う場面 |
+|------|------|-----------|----------|
+| 0 | `list` | なし | 探索・重複チェック・Open 票の洗い出し |
+| 1 | `get` | なし（description のみ） | 新規着手・精緻化・子 1 枚の実装（委任パック済み） |
+| 2 | `get` | `["children"]` | 分割判定・子の特定・親ハブの構造確認 |
+| 3 | `get` | `["journals"]` または `["journals","children"]` | 再開・クローズ監査・分割証拠（`分割:` / `分割不要:`）の確認 |
+
+**運用ルール**
+
+- 原則 **下位 Tier から**試し、情報が足りなければ 1 段だけ上げる
+- **親ハブに実装着手しない**。親は Tier 2 まで。分割証拠が journal に無いときだけ Tier 3
+- **委任パック＋description** で DoD・検証・依存が読めるなら、再開も Tier 1 でよい（詳細は `resume.md`）
+- MemPalace drawer に要約があれば **先に drawer**、Redmine は不足分だけ get
+- **同一セッション**で同票を Tier 3 で再 get しない（既に読んだ journals を再利用）
+
+Tier 1 の例:
+
+```json
+{ "action": "get", "issue_id": "42" }
+```
+
+Tier 3 の例:
+
+```json
+{ "action": "get", "issue_id": "42", "include": ["journals", "children"] }
+```
+
+ツール: `redmine_issues`
 
 ## ステータス（本環境の目安）
 
@@ -26,13 +60,7 @@
 
 ## 最小操作例
 
-取得:
-
-```json
-{ "action": "get", "issue_id": "42", "include": ["journals", "children"] }
-```
-
-ツール: `redmine_issues`
+取得: 上記 **取得 Tier** に従う（迷ったら Tier 1 から）。
 
 着手（ノート + 進行中）:
 

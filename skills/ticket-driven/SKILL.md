@@ -37,6 +37,9 @@ refine 後も DoD 不能／外部情報必須 → 質問は最大3つ。例外: 
 |----------|----------------|
 | ジャーナル文言・タイミング（`分割:` / `分割不要:` / 再開検討 / 完了監査 含む） | `sections/journal.md` |
 | 子（または単一票）の着手直前・委任の境界 | `sections/delegate-pack.md` |
+| 子をサブエージェントへ委任する（共通・並列禁止） | `sections/delegate-subagent.md` |
+| 上記 + OpenCode | `sections/delegate-subagent-opencode.md` |
+| 上記 + Hermes | `sections/delegate-subagent-hermes.md` |
 | Resolved 直前のクローズ監査 | `sections/close-audit.md` |
 | 条件別の重い手順の自動判定表 | `sections/dispatch.md` |
 | 途中停止・モデル切替・状況把握して再開 | `sections/resume.md` |
@@ -56,7 +59,8 @@ refine 後も DoD 不能／外部情報必須 → 質問は最大3つ。例外: 
 get(#N)
  → ticket-refine（足りていれば更新スキップ）
  → ticket-split（機能構成→セッション完走）※必読・判定必須
-     ├ 分割 → 親に `分割:` ノート → 子ごとに着手〜完了。親は done_ratio / 最終 Resolved
+     ├ 分割 → 親に `分割:` ノート → 子ごとに着手〜完了（**直列**。並列禁止）。親は done_ratio / 最終 Resolved
+     │         OpenCode/Hermes なら子をサブエージェント委任可 → delegate-subagent.md
      └ 分割不要可 → 親に `分割不要:` ノート（省略禁止）→ 当該チケットで着手〜完了
  → 着手ノート（**委任パック必須**）+ In Progress（子があるなら子のみ）→ delegate-pack.md
  → テスト確認（漏れ拾い）→ test-plan.md

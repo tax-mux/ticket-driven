@@ -20,26 +20,24 @@ description: 既存Redmineチケットの状態・情報を更新する。進捗
 
 ### MCP 約束（この環境）
 
-- 更新・ノートは **`redmine_api_request`** の `PUT /issues/{id}.json`
-- `issue_id` はパスに入れる（引数名 `id` は使わない）
-- `body.issue` はオブジェクト。JSON 文字列にしない
-- `redmine_issues` は **list / get のみ**
+- 更新・ノートは **`mcp-redmine_redmine_issues`** の `action: "update"`（フラット引数）
+- `issue_id` は **文字列**（`"42"`）。誤って `id` キーを使わない
+- ジャーナルだけなら `notes` のみ。`add_note` action は **無い**
+- ステータス ID は **`mcp-redmine_redmine_metadata`** `kind: "issue_statuses"` で確認
+- 認証トークンは渡さない
+- relations 等だけ **`mcp-redmine_redmine_api_request`**
 
 ### 基本的な更新
 
 ```json
 {
-  "method": "PUT",
-  "path": "/issues/42.json",
-  "body": {
-    "issue": {
-      "status_id": 2,
-      "notes": "コメント"
-    }
-  }
+  "action": "update",
+  "issue_id": "42",
+  "status_id": 2,
+  "notes": "着手: 概要"
 }
 ```
 
-ツール: `redmine_api_request`（`42` を実 ID に置換）
+ツール: `mcp-redmine_redmine_issues`（`42` を実 ID に置換）
 
 完了条件やテスト範囲が更新されていない場合は、チケットを解決してはいけない。説明まわりは `description.md`。
