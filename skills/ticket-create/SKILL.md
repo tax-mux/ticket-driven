@@ -20,9 +20,12 @@ Redmine に新しいチケットを作成する手順。
 
 ### MCP 約束（この環境）
 
-- 作成は **`redmine_api_request`**（`redmine_issues` に create は無い）
-- `body` はオブジェクト。JSON 文字列にしない
+- 作成は **`mcp-redmine_redmine_issues`** の `action: "create"`（フラット引数）
+- `project_id`, `tracker_id`, `status_id`, `subject`, `description` をトップレベルに渡す
+- `body` / `issue` は **オブジェクト**。JSON 文字列にしない
+- トラッカー ID が不明なら先に **`mcp-redmine_redmine_metadata`** `kind: "trackers"`
 - 認証トークンは渡さない（プロファイルはヘッダ側）
+- relations 等だけ **`mcp-redmine_redmine_api_request`**
 
 ### 作成必須項目（本文）
 

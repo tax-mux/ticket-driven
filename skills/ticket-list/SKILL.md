@@ -20,10 +20,12 @@ description: 条件に合うRedmineチケットを取得する。ステータス
 
 ### MCP 約束（この環境）
 
-- 一覧は **`redmine_issues`** の `action: "list"`
+- チケット一覧は **`mcp-redmine_redmine_issues`** の `action: "list"`
+- プロジェクト一覧は **`mcp-redmine_redmine_projects`** の `action: "list"`
 - フィルタはトップレベルではなく **`query` オブジェクト**
 - `include` が必要な詳細取得は `get`（配列）。list の include 文字列は使わない
-- ページをまたぐ大量取得は `redmine_api_request` で `offset` / `limit` を回す（`redmine_paginated_request` は無い）
+- **list に description は付かない**（MCP 側で除去）。本文は `get` でドリルダウン
+- ページをまたぐ大量取得は `redmine_issues` list の `query` に `offset` / `limit`、または `mcp-redmine_redmine_api_request`（`redmine_paginated_request` は **無い**）
 
 最小例:
 
@@ -37,3 +39,11 @@ description: 条件に合うRedmineチケットを取得する。ステータス
   }
 }
 ```
+
+プロジェクト一覧:
+
+```json
+{ "action": "list" }
+```
+
+ツール: `mcp-redmine_redmine_projects`

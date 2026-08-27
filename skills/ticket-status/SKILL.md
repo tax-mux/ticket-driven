@@ -19,8 +19,8 @@ description: チケットのステータスに応じた対応手順。ステー�
 
 ### MCP 約束（この環境）
 
-- ステータス一覧: `redmine_api_request` `GET /issue_statuses.json`
-- ステータス変更: `redmine_api_request` `PUT /issues/{id}.json`
-- `redmine_issue_statuses` ツールは無い
+- ステータス一覧: **`mcp-redmine_redmine_metadata`** `{ "kind": "issue_statuses" }`
+- ステータス変更: **`mcp-redmine_redmine_issues`** `action: "update"` + `status_id`
+- `redmine_issue_statuses` / `GET /issue_statuses.json` 専用ツールは **無い**（metadata を使う）
 
 日常の着手〜完了は `ticket-driven` を優先。本スキルはステータスごとの補助手順。

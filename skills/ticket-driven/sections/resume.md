@@ -13,7 +13,10 @@
 
 ```
 1. 現状把握（まだコード変更しない）
-   - get(チケット) + journals / children
+   - 取得 Tier（`ops.md`）:
+     - 既定: Tier 3（journals / children）— 分割証拠・着手履歴・監査が要る再開
+     - 委任パック＋description で DoD・検証・依存が足りる → Tier 1 に降格可
+     - 子の特定だけ → Tier 2。MemPalace 要約があれば先に読み、Redmine は不足分だけ
    - 未完 DoD・途中差分・前回の失敗点を1短くまとめる
 2. サイズ判定（残り作業）
    - 未完 DoD 数、独立に検証できる塊、残りファイル／検証の広さ
@@ -51,6 +54,7 @@
 
 ## 関連
 
+- 取得 Tier 表・MCP 例: `ops.md`
 - 分割の機械的トリガ・再分割: `ticket-split`（`policy.md`）
 - 分割後の順: `after-split.md`
 - 証拠フォーマット: `journal.md`
