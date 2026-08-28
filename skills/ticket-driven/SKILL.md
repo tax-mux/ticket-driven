@@ -25,6 +25,7 @@ Redmine チケットを起点に開発タスクを駆動する。
    - 親ジャーナルに `分割: ...`（子 ID 列挙）がある、**または**
    - 親ジャーナルに `分割不要: {理由}` がある（理由フォーマットは `journal.md`。機械的必須分割に該当する親では **禁止**）
 4. 着手ジャーナル（**実装チケット＝子がある場合は必ず子**。親への着手・親 In Progress は禁止）。**委任パック必須**（`delegate-pack.md`）
+5. **Redmine フィールド更新**（下記「Redmine 更新」）。`notes` だけ書いて **status / done_ratio を触らない** のは未着手・未完了扱い
 
 **分割判定はスキップしない。** refine 直後に必ず `ticket-split` を開き、子作成か `分割不要:` ノートまでやってから着手する。
 
@@ -68,14 +69,29 @@ A. get(#N) + 計画をチケットに書く
    → ticket-split → 親に `分割:` または `分割不要:`（journal.md）
 
 B. 着手
-   → `着手:` + 委任パック + In Progress（子があるなら **子のみ**）→ delegate-pack.md
+   → `着手:` + 委任パック + **status_id=進行中**（子があるなら **子のみ**）→ delegate-pack.md / ops.md
 
 C. 実装
-   → test-plan 確認 → 実装（refactor.md 予防）→ テスト実行 + DoD 検証
+   → test-plan 確認 → 実装（refactor.md 予防）→ DoD 区切りで **done_ratio** → テスト実行 + DoD 検証
 
 D. 完了
-   → close-audit.md → 完了ノート + Resolved → コミット/PR は依頼時のみ（ops.md）
+   → close-audit.md → 完了ノート + **status_id=Resolved** + **done_ratio=100** → コミット/PR は依頼時のみ（ops.md）
+   → 子 Resolved 直後は **親 done_ratio** を更新（after-split.md）
 ```
+
+## Redmine 更新（省略禁止）
+
+**チャット報告や `notes` だけでは進捗にならない。** `redmine_api_request` でフィールドを更新する（操作例は `ops.md`）。
+
+| タイミング | 対象票 | 必須 |
+|------------|--------|------|
+| B 着手 | 実装チケット | `notes`（`着手:` + 委任パック）+ **`status_id`=進行中** |
+| C 途中 | 同左 | 主要 DoD 完了ごとに **`done_ratio`**（0→25→50→75。詰まり報告以外の連投は不要） |
+| D 完了 | 同左 | `notes`（`完了:` + クローズ監査）+ **`status_id`=Resolved** + **`done_ratio`=100** |
+| 子が Resolved | **親** | **`done_ratio`** = 完了子数 / 子総数（%）。全子後に親 Resolved |
+
+- New のまま実装しない / 0% のまま Resolved しない
+- 着手〜完了中の status・done_ratio は **`ticket-driven` 内で更新**（`ticket-update` に逃がさない）
 
 OpenCode/Hermes で子を委任する場合: B のあと `delegate-subagent.md`（**1 子ずつ直列**）。
 

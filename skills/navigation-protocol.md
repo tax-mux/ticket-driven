@@ -39,7 +39,7 @@
 | 精緻化と分割、どっち？ | 先に `ticket-refine`、直後に `ticket-driven` 経由で `ticket-split`（日常は `ticket-driven` 1本で両方走る） |
 | 再開はすぐ実装？ | しない。`ticket-driven` の `resume.md`：把握→サイズ→分割／再分割→子のみ |
 | create と driven？ | 起票だけなら `ticket-create`。実装まで含むなら `ticket-driven`（必要なら create を呼ぶ） |
-| update と driven？ | ノートやフィールドだけなら `ticket-update`。着手〜完了フローなら `ticket-driven` |
+| update と driven？ | **着手〜完了の status / done_ratio は `ticket-driven` 内で必ず更新**（別スキルに逃がさない）。担当者変更・説明だけ・単発コメント等は `ticket-update` |
 | git-* を先に？ | チケット駆動中のコミット/PRはユーザー依頼時。手順は各 git-*。流れの親は `ticket-driven` |
 
 ## スキルマッピング（INPUT → PATH）
