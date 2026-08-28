@@ -4,9 +4,9 @@
 
 ## 計画の正本
 
-- **チケットのジャーナル + description** が計画。長いセッション履歴は正本にしない
-- 再開・委任前: `resume.md` — ジャーナルで **リプラン要否** を判定してから `task`
-- 委任 prompt には **委任パック全文** を載せる
+- **Redmine チケットの journals + description** が計画（`redmine_issues` get。ローカルファイルではない）
+- 再開・委任前: `resume.md` — Redmine journals で **リプラン要否** を判定してから `task`
+- 委任 prompt には **委任パック全文**（Redmine から取得した内容）を載せる
 
 ## ツール
 
@@ -38,7 +38,7 @@ Redmine 子チケット #456 を完走せよ。親 #100 には触るな。
 - 禁止: 親実装 / 他子侵食 / 並列委任
 
 手順:
-1. redmine_issues get #456（Tier 1。include なし）
+1. redmine_issues get #456（Tier 1。再開・分割証拠なら include journals）
 2. 委任パックに従い実装・テスト
 3. クローズ監査後、完了ノート + Resolved
 4. 親・他子は更新しない（done_ratio は親セッション側）

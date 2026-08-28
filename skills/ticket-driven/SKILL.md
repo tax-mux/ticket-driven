@@ -8,11 +8,24 @@ Redmine チケットを起点に開発タスクを駆動する。
 
 **常時読むのは本ファイルだけ。** 本文は目録の条件に合うファイルだけ開く。`sections/` をまとめて読まない。
 
+**パス解釈:** 本スキル内の `sections/*.md` は **スキル正本**（例: `~/.agents/skills/ticket-driven/sections/`）への参照。**作業リポジトリ内のパスではない。** `.ticket-driven/` 等のローカルディレクトリは **作らない・読まない**。
+
+## ジャーナルとは（誤解防止）
+
+| 用語 | 正体 | 読み方 |
+|------|------|--------|
+| **ジャーナル**（作業ログ） | Redmine チケットの **`journals`**（各 `notes` の履歴） | `redmine_issues` **get** + `include: ["journals"]`（Tier は `ops.md`） |
+| **`sections/journal.md`** | 上記 `notes` の **書式・タイミングの説明書**（スキル内 Markdown） | 形式が分からないときだけ開く。**作業ログの実体ではない** |
+
+- **禁止:** `read` / `read_file` / `glob` でプロジェクト内からジャーナルを探す（`.ticket-driven/`、`journal.md`、`.redmine/` 等）
+- **禁止:** MemPalace だけを正本にして Redmine journals を読まない（drawer は **補助**。再開・分割証拠は Redmine 優先）
+- **禁止:** ジャーナル未取得のまま「情報不足」とユーザーに丸投げ（先に Redmine get）
+
 ## チケットの役割
 
 - ユーザーが渡すのは **絡まった依頼** でよい（渡し方の問題ではない）
 - エージェントが **計画をチケットに書く**（refine / 分割 / 委任パック / ジャーナル）
-- **正本**: description（DoD）+ ジャーナル（作業ログ）。**非正本**: チャット、圧縮サマリ、セッション履歴
+- **正本**: description（DoD）+ **Redmine journals**（作業ログ）。**非正本**: チャット、圧縮サマリ、セッション履歴、MemPalace 要約単体
 - 受け取ったあと **方針を建て直す** のはエージェントの仕事。再開時は作業ログを見て **リプラン要否を判定**（毎回ゼロから組み直す必要はない）→ `resume.md`
 
 ## HARD GATE（最優先）
@@ -23,7 +36,7 @@ Redmine チケットを起点に開発タスクを駆動する。
 2. **要件が充足**され、完了条件が **検証可能**（中身は `ticket-refine`）
 3. **分割の証拠**がある（自己申告だけでは不可）:
    - 親ジャーナルに `分割: ...`（子 ID 列挙）がある、**または**
-   - 親ジャーナルに `分割不要: {理由}` がある（理由フォーマットは `journal.md`。機械的必須分割に該当する親では **禁止**）
+   - 親ジャーナルに `分割不要: {理由}` がある（理由フォーマットはスキル `sections/journal.md`。機械的必須分割に該当する親では **禁止**）
 4. 着手ジャーナル（**実装チケット＝子がある場合は必ず子**。親への着手・親 In Progress は禁止）。**委任パック必須**（`delegate-pack.md`）
 5. **Redmine フィールド更新**（下記「Redmine 更新」）。`notes` だけ書いて **status / done_ratio を触らない** のは未着手・未完了扱い
 
@@ -43,7 +56,7 @@ refine 後も DoD 不能／外部情報必須 → 質問は最大3つ。例外: 
 
 | 開く条件 | 読むファイル |
 |----------|----------------|
-| ジャーナル文言・タイミング（`分割:` / `分割不要:` / 再開検討 / 完了監査 含む） | `sections/journal.md` |
+| ジャーナル **書式**（`分割:` / `着手:` 等の文言。実体は Redmine get） | スキル `sections/journal.md` |
 | 子（または単一票）の着手直前・委任の境界 | `sections/delegate-pack.md` |
 | 子をサブエージェントへ委任する（共通・並列禁止） | `sections/delegate-subagent.md` |
 | 上記 + OpenCode | `sections/delegate-subagent-opencode.md` |
@@ -66,7 +79,7 @@ refine 後も DoD 不能／外部情報必須 → 質問は最大3つ。例外: 
 ```
 A. get(#N) + 計画をチケットに書く
    → ticket-refine（足りていればスキップ）
-   → ticket-split → 親に `分割:` または `分割不要:`（journal.md）
+   → ticket-split → 親に `分割:` または `分割不要:`（Redmine notes。書式は sections/journal.md）
 
 B. 着手
    → `着手:` + 委任パック + **status_id=進行中**（子があるなら **子のみ**）→ delegate-pack.md / ops.md
@@ -99,11 +112,11 @@ OpenCode/Hermes で子を委任する場合: B のあと `delegate-subagent.md`�
 
 ```
 再開要求
- → ジャーナル + 差分で現状把握（edit 禁止）
+ → ジャーナル（**Redmine get**）+ 差分で現状把握（edit 禁止）
  → リプラン要否を判定
      ├ 不要 → `再開検討:` / `計画継続:` を1行 → B 以降（共通ステップ）
      └ 必要 → refine / split で計画を書き直し → `リプラン:` → B 以降
  → 長停止・圧縮後・モデル切替は新セッション推奨
 ```
 
-詳細は `resume.md`。条件分岐は `dispatch.md`。ジャーナル例は `journal.md`。
+詳細は `resume.md`。条件分岐は `dispatch.md`。ジャーナル **書式** はスキル `sections/journal.md`。

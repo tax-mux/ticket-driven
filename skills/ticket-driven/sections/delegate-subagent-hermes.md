@@ -4,9 +4,9 @@
 
 ## 計画の正本
 
-- **チケットのジャーナル + description** が計画。圧縮サマリ・長いセッション履歴は正本にしない
-- 再開・委任前: `resume.md` — ジャーナルを読み **リプラン要否** を判定してから `delegate_task`
-- 委任 `context` には **委任パック全文**（チケットに書いた計画）を載せる。チャット要約だけ渡さない
+- **Redmine チケットの journals + description** が計画（MCP get。ローカル `.ticket-driven/` 等ではない）
+- 再開・委任前: `resume.md` — Redmine journals で **リプラン要否** を判定してから `delegate_task`
+- 委任 `context` には **委任パック全文**（Redmine から取得）を載せる。チャット要約だけ渡さない
 
 ## ツール
 
