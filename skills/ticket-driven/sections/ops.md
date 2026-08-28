@@ -1,5 +1,13 @@
 # Redmine MCP・ステータス・操作例
 
+## ジャーナル（作業ログ）の読み方
+
+- **正本:** チケット get 応答の **`journals`** 配列（各要素の `notes`）
+- **取得:** `redmine_issues` action `get` + `include: ["journals"]`（再開・分割証拠は Tier 3。`ops.md`）
+- **書き込み:** `redmine_api_request` PUT の `issue.notes`（+ 必要なら `status_id` / `done_ratio`）
+- **禁止:** 作業リポジトリ内の `.ticket-driven/`、`journal.md`、`read_file` でジャーナルを探す
+- **補助:** MemPalace drawer は Redmine の代わりにしない（不足分の get を先）
+
 ## Redmine MCP 呼び出しの約束（この環境）
 
 - `redmine_issues` は **`list` / `get` のみ**。作成・更新・ノートは **`redmine_api_request`**
