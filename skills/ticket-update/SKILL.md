@@ -40,4 +40,11 @@ description: 既存Redmineチケットの状態・情報を更新する。進捗
 
 ツール: `mcp-redmine_redmine_issues`（`42` を実 ID に置換）
 
-完了条件やテスト範囲が更新されていない場合は、チケットを解決してはいけない。説明まわりは `description.md`。
+### done_ratio と解決の順序
+
+- **Open（新規/進行中）のうちに** `done_ratio` を設定し、その後（または **同一 update で同時に**）`status_id: 3`（解決）
+- 解決(3) のあとだけ rate を変えようとしない（凍結されやすい）
+- エージェントは **終了(5) にしない**（人が閉じる）
+- update の ACK だけで成功にしない。必要なら `get` で status / done_ratio を確認（詳細は `ticket-driven` の `ops.md`）
+
+完了条件やテスト範囲が更新されていない場合は、チケットを解決してはいけない。説明まわりは `description.md`。例は `common-updates.md`。

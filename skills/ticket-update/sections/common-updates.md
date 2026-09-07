@@ -2,7 +2,9 @@
 
 ツール: **`mcp-redmine_redmine_issues`**（`action: "update"`）。`issue_id` は文字列。
 
-## 進捗率更新
+## 進捗率更新（解決の前または同時）
+
+ステータスがまだ新規/進行中のとき（または解決と同一リクエスト）:
 
 ```json
 {
@@ -11,6 +13,22 @@
   "done_ratio": 50
 }
 ```
+
+完了時の推奨（rate と解決を同時）:
+
+```json
+{
+  "action": "update",
+  "issue_id": "{ID}",
+  "done_ratio": 100,
+  "status_id": 3,
+  "notes": "完了: ... — テスト: ..."
+}
+```
+
+**禁止**: 先に `status_id: 3` だけ送り、あとから `done_ratio` だけ直す。**禁止**: `status_id: 5`（終了）をエージェントが使うこと。
+
+update 後は必要なら `get` で反映を確認。ACK だけでは不十分。
 
 ## 担当者変更
 
@@ -24,11 +42,24 @@
 
 ## ステータス変更
 
+進行中:
+
 ```json
 {
   "action": "update",
   "issue_id": "{ID}",
-  "status_id": 3
+  "status_id": 2
+}
+```
+
+解決（完了。必要なら同じリクエストに `done_ratio: 100`）:
+
+```json
+{
+  "action": "update",
+  "issue_id": "{ID}",
+  "status_id": 3,
+  "done_ratio": 100
 }
 ```
 
