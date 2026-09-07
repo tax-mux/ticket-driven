@@ -18,7 +18,7 @@
 ```json
 {
   "action": "update",
-  "issue_id": "42",
+  "issue_id": "{ID}",
   "notes": "分割: 機能構成→セッション完走\n- #43: 子題名A\n- #44: 子題名B\n作業単位は子。親はハブ。"
 }
 ```
@@ -28,7 +28,7 @@
 ```json
 {
   "action": "update",
-  "issue_id": "42",
+  "issue_id": "{ID}",
   "notes": "分割不要: DoD=2個 / 中心ファイル目安=1成果 / 理由=単一スクリプト変更で1セッション完走"
 }
 ```
@@ -38,9 +38,9 @@
 ```json
 {
   "action": "update",
-  "issue_id": "43",
+  "issue_id": "{CHILD_ID}",
   "status_id": 2,
-  "notes": "着手: {概要}\n\n委任パック:\n- 作業単位: #43\n- DoD: ...\n- 影響範囲: ...\n- 検証: ...\n- 依存: なし\n- 禁止: 親実装 / 他子侵食 / 範囲外メタ"
+  "notes": "着手: {概要}\n\n委任パック:\n- 作業単位: #{CHILD_ID}\n- DoD: ...\n- 影響範囲: ...\n- 検証: ...\n- 依存: なし\n- 禁止: 親実装 / 他子侵食 / 範囲外メタ"
 }
 ```
 
@@ -49,7 +49,7 @@
 ```json
 {
   "action": "update",
-  "issue_id": "43",
+  "issue_id": "{CHILD_ID}",
   "done_ratio": 100,
   "notes": "完了: {概要} — テスト: {結果}\nクローズ監査: DoD全[x]=yes / 検証一致=yes / 親実装なし=yes / 範囲内=yes / 調査のみでない=yes / ステータス実体=yes / done_ratio実体=yes"
 }
@@ -60,7 +60,7 @@
 ```json
 {
   "action": "update",
-  "issue_id": "43",
+  "issue_id": "{CHILD_ID}",
   "status_id": 3
 }
 ```
@@ -104,13 +104,13 @@ Redmine get は **必要最小の `include`** に留める。一覧は常に Tie
 Tier 1 の例:
 
 ```json
-{ "action": "get", "issue_id": "42" }
+{ "action": "get", "issue_id": "{ID}" }
 ```
 
 Tier 3 の例:
 
 ```json
-{ "action": "get", "issue_id": "42", "include": ["journals", "children"] }
+{ "action": "get", "issue_id": "{ID}", "include": ["journals", "children"] }
 ```
 
 ツール: `redmine_issues`
