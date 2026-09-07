@@ -8,7 +8,7 @@
   "path": "/issues/{ID}/relations.json",
   "body": {
     "relation": {
-      "issue_to_id": 43,
+      "issue_to_id": "{CHILD_ID}",
       "relation_type": "relates",
       "delay": 0
     }

@@ -21,7 +21,7 @@ description: 既存Redmineチケットの状態・情報を更新する。進捗
 ### MCP 約束（この環境）
 
 - 更新・ノートは **`mcp-redmine_redmine_issues`** の `action: "update"`（フラット引数）
-- `issue_id` は **文字列**（`"42"`）。誤って `id` キーを使わない
+- `issue_id` は **文字列**（`"{ID}"`）。誤って `id` キーを使わない
 - ジャーナルだけなら `notes` のみ。`add_note` action は **無い**
 - ステータス ID は **`mcp-redmine_redmine_metadata`** `kind: "issue_statuses"` で確認
 - 認証トークンは渡さない

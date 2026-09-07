@@ -3,7 +3,7 @@
 ```json
 {
   "action": "get",
-  "issue_id": "42",
+  "issue_id": "{ID}",
   "include": ["journals", "watchers", "children"]
 }
 ```
