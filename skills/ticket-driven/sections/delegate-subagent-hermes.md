@@ -24,10 +24,10 @@
 
 ```text
 delegate_task(
-  goal="#456 を Resolved まで完走（親 #100 には触らない）",
+  goal="#{CHILD_ID} を Resolved まで完走（親 #{PARENT_ID} には触らない）",
   context="""
 委任パック:
-- 作業単位: #456
+- 作業単位: #{CHILD_ID}
 - DoD: （子 description / ジャーナルの委任パックをそのまま）
 - 影響範囲: …
 - 検証: …
@@ -35,7 +35,7 @@ delegate_task(
 - 禁止: 親実装 / 他子侵食 / 並列委任 / 追加の delegate_task
 
 手順:
-1. redmine_issues get #456（Tier 1。include なし）
+1. redmine_issues get #{CHILD_ID}（Tier 1。include なし）
 2. 委任パックに従い実装・テスト
 3. クローズ監査後、完了ノート + Resolved
 4. 親・他子は更新しない（done_ratio は親セッション側）

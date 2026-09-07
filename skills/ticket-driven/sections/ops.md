@@ -19,7 +19,7 @@
 {
   "action": "update",
   "issue_id": "{ID}",
-  "notes": "分割: 機能構成→セッション完走\n- #43: 子題名A\n- #44: 子題名B\n作業単位は子。親はハブ。"
+  "notes": "分割: 機能構成→セッション完走\n- #{CHILD_ID}: 子題名A\n- #{CHILD_ID2}: 子題名B\n作業単位は子。親はハブ。"
 }
 ```
 
@@ -72,11 +72,11 @@
 - `redmine_issues`: **`list` / `get` / `create` / `update`**（フラット引数）。ジャーナルは update の `notes`
 - relations・特殊 REST だけ **`redmine_api_request`**
 - `issue` / `relation` / `body` / `query` は **オブジェクト**。JSON 文字列にしない
-- `issue_id` は文字列（`"42"`）。誤って `id` キーを使わない
+- `issue_id` は文字列（`"{ID}"`）。誤って `id` キーを使わない
 - `get` の `include` は **文字列配列**（`["journals","attachments"]`）
 - list のフィルタは **`query` オブジェクト**へ
 - **一覧に description は無い**（件名で選び、本文は get）。`GET /issues.json` / `GET /projects.json` も同様
-- `redmine_api_request` の `path` は **相対パスのみ**（`/issues/42.json`）。フル URL は禁止
+- `redmine_api_request` の `path` は **相対パスのみ**（`/issues/{ID}.json`）。フル URL は禁止
 - 認証トークンは渡さない。MCP 非接続時は `./tools/redmine_helper.sh`（`REDMINE_API_KEY` 必須）
 - **添付（画像等）**: MCP では不可。`./tools/redmine_helper.sh attach <id> <file> [notes]` を使う
 - HTTP 不通時は Redmine / DB コンテナ起動を先に試す
@@ -152,7 +152,7 @@ Redmine は **解決(3) のあと `done_ratio` が凍結**することが多い�
 ```json
 {
   "method": "PUT",
-  "path": "/issues/42.json",
+  "path": "/issues/{ID}.json",
   "body": { "issue": { "notes": "着手: APIリトライ", "status_id": 2 } }
 }
 ```

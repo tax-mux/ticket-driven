@@ -26,7 +26,7 @@
   "body": {
     "issue": {
       "project_id": "{プロジェクトID}",
-      "parent_issue_id": 42,
+      "parent_issue_id": "{ID}",
       "tracker_id": 2,
       "subject": "{セッション単位のタイトル}",
       "description": "{説明}",
@@ -49,7 +49,7 @@
   "path": "/issues/{先行ID}/relations.json",
   "body": {
     "relation": {
-      "issue_to_id": 43,
+      "issue_to_id": "{CHILD_ID}",
       "relation_type": "precedes"
     }
   }

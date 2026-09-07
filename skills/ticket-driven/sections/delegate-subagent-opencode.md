@@ -25,12 +25,12 @@
 ```text
 task(
   subagent_type: "general",
-  description: "子 #456 実装",
+  description: "子 #{CHILD_ID} 実装",
   prompt: """
-Redmine 子チケット #456 を完走せよ。親 #100 には触るな。
+Redmine 子チケット #{CHILD_ID} を完走せよ。親 #{PARENT_ID} には触るな。
 
 委任パック:
-- 作業単位: #456
+- 作業単位: #{CHILD_ID}
 - DoD: （子 description / ジャーナルの委任パックをそのまま）
 - 影響範囲: …
 - 検証: …
@@ -38,7 +38,7 @@ Redmine 子チケット #456 を完走せよ。親 #100 には触るな。
 - 禁止: 親実装 / 他子侵食 / 並列委任
 
 手順:
-1. redmine_issues get #456（Tier 1。再開・分割証拠なら include journals）
+1. redmine_issues get #{CHILD_ID}（Tier 1。再開・分割証拠なら include journals）
 2. 委任パックに従い実装・テスト
 3. クローズ監査後、完了ノート + Resolved
 4. 親・他子は更新しない（done_ratio は親セッション側）
