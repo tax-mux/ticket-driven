@@ -32,7 +32,7 @@ description: 既存Redmineチケットの状態・情報を更新する。進捗
 ```json
 {
   "action": "update",
-  "issue_id": "42",
+  "issue_id": "{ID}",
   "status_id": 2,
   "notes": "着手: 概要"
 }
