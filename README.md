@@ -101,8 +101,12 @@ Cursor ユーザールールの commit/PR 手順が既定。本リポの `git-*`
 
 ## 環境
 
-- **GitBucket**: `http://{gitbucket-host}:8080`
-- **Redmine**: `http://127.0.0.1:3000`
+- **Git ホスト**: `http://{git-host}:{port}` または GitHub（環境依存）
+- **Redmine**: `http://127.0.0.1:3000`（または自前 Redmine）
+
+## License
+
+[MIT](./LICENSE)
 
 ## ファイル構成
 
@@ -120,4 +124,5 @@ tools/
   validate-opencode.mjs  # JSONC 構文検証
 AGENTS.md
 README.md
+LICENSE
 ```

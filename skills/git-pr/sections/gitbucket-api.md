@@ -37,11 +37,11 @@ curl -s -X POST -u "{user}:{password}" \
   -H "Content-Type: application/json" \
   -d '{
     "title": "docs: 完了時にコミットとPR作成を必須ルールとして追加",
-    "body": "## 概要\nチケット駆動開発の完了フローにコミットとPR作成を必須ルールとして追加。\n\n## 変更内容\n- AGENTS.md に完了時ルール#12を追加\n- 完了チェックリストにコミットとPR作成のチェック項目を追加\n\n## テスト\n- [ ] Redmine チケットで作業完了後にコミット・PRが自動作成される\n\n## 備考\n- リモートリポジトリ: http://{gitbucket-host}:8080/{owner}/ticket-driven\n- Refs: #N",
-    "head": "main",
+    "body": "## 概要\nチケット駆動開発の完了フローにコミットとPR作成を必須ルールとして追加。\n\n## 変更内容\n- AGENTS.md に完了時ルール#12を追加\n- 完了チェックリストにコミットとPR作成のチェック項目を追加\n\n## テスト\n- [ ] Redmine チケットで作業完了後にコミット・PRが自動作成される\n\n## 備考\n- リモートリポジトリ: http://{gitbucket-host}:{port}/{owner}/ticket-driven\n- Refs: #N",
+    "head": "feature/example",
     "base": "main"
   }' \
-  "http://{gitbucket-host}:8080/api/v3/repos/{owner}/ticket-driven/pulls"
+  "http://{gitbucket-host}:{port}/api/v3/repos/{owner}/ticket-driven/pulls"
 ```
 
 ## 確認
