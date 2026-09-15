@@ -1,0 +1,138 @@
+# ticket-driven — チケット駆動開発 AI エージェント
+
+[English](README.md)
+
+Redmine チケットを起点に開発を駆動する AI エージェント用スキル群。
+
+## mcp-redmine 導入下で効果を発揮する
+
+本スキル群は [**mcp-redmine**](https://github.com/tax-mux/mcp-redmine)（Redmine REST API 向け SSE MCP）を導入・接続した環境で真価を発揮する。ジャーナル記録、ステータス / `done_ratio` 更新、精緻化・分割の HARD GATE、日常のチケット駆動ループは、エージェントが MCP 経由で Redmine を操作できることを前提に設計している。
+
+mcp-redmine が無い場合でも `./tools/redmine_helper.sh` で CLI フォールバックは可能だが、エージェント完走の本線は mcp-redmine 向けである。
+
+## セットアップ
+
+### 1. 依存関係
+
+```bash
+npm install
+```
+
+### 2. OpenCode 設定
+
+```bash
+cp .opencode/opencode.jsonc.example .opencode/opencode.jsonc
+```
+
+`.opencode/opencode.jsonc` は gitignore 済み。以下を自分の環境に合わせて編集する。
+
+| 項目 | 説明 |
+|------|------|
+| `REDMINE_URL` / `REDMINE_API_KEY` | ローカル Redmine |
+| `X-API-KEY`（telospvl） | TelosPVL API キー |
+| `instructions` / `mempalace` のパス | マシン固有パス（example のプレースホルダを置換） |
+
+### 3. 環境変数（CLI 用）
+
+```bash
+export REDMINE_URL=http://127.0.0.1:3000
+export REDMINE_API_KEY=your_key
+./tools/redmine_helper.sh get 2
+```
+
+### 4. Cursor
+
+- プロジェクト: `.cursor/skills/` → `skills/` へのシンボリックリンク（リポジトリ同梱）
+- 個人: `~/.cursor/skills/` に同名リンクを張ると他ワークスペースでも利用可
+- MCP: `.cursor/mcp.json`（Redmine / MemPalace / TelosPVL）
+  - Redmine は **mcp-redmine** の URL 接続を推奨（クライアント設定に API キーを置かない）
+  - または `cp .env.example .env` してキーを埋める（`.env` は gitignore）
+  - 反映には Cursor のウィンドウ再読み込みが必要
+
+### 5. OpenCode / Hermes
+
+正本は `skills/`。コピーを置かず、次へ symlink する。
+
+```bash
+./tools/sync-skill-links.sh
+```
+
+| ランタイム | 配置 |
+|------------|------|
+| OpenCode | `~/.agents/skills/<name>` |
+| Hermes | `~/.hermes/skills/software-development/<name>` |
+
+反映には OpenCode / Hermes の再起動が必要な場合あり。
+
+Hermes の `~/.hermes/config.yaml` `agent.system_prompt` はスナップショット。現行 TelosPVL ID と INIT_BOOTSTRAP を取り込む:
+
+```bash
+hermes-sync-opencode-rules
+```
+
+再起動は自動化しない。ユーザーが Hermes を再起動する。
+
+### 6. 検証
+
+```bash
+npm run validate:opencode
+```
+
+## スキル一覧
+
+正本はすべて `skills/<name>/SKILL.md`。マッピングは `skills/navigation-protocol.md`。
+
+### チケット管理
+
+| スキル | 内容 |
+|--------|------|
+| `ticket-driven` | チケット駆動開発の全体ワークフロー |
+| `ticket-create` | チケット作成 |
+| `ticket-list` | チケット一覧取得 |
+| `ticket-refine` | チケット精緻化（分割前の要件充足） |
+| `ticket-relation` | チケット関連付け |
+| `ticket-split` | チケット分割（機能構成→セッション完走） |
+| `ticket-status` | ステータス別アクション |
+| `ticket-update` | チケット更新 |
+
+### Git 操作
+
+| スキル | 内容 | 使い分け |
+|--------|------|----------|
+| `git-commit` | コミット手順（メッセージ型・hooks） | ユーザーが明示的にコミット依頼したとき。Cursor 標準の commit ルールと併用 |
+| `git-pr` | PR作成（gh / GitBucket API） | GitBucket 向け curl 手順が必要なとき。GitHub なら `gh` 標準ルールでも可 |
+| `git-branch` | ブランチ操作 | ブランチ命名・切替のプロジェクト規約 |
+| `git-rebase` | リベース | 衝突解決の手順確認 |
+| `git-diff` | diff 確認・レビュー | レビュー観点の補助 |
+| `git-log` | ログ検索 | 履歴調査 |
+
+Cursor ユーザールールの commit/PR 手順が既定。本リポの `git-*` スキルは **GitBucket 固有・プロジェクト規約・レビュー観点** の補完として使う。
+
+## 環境
+
+- **Git ホスト**: `http://{git-host}:{port}` または GitHub（環境依存）
+- **Redmine**: `http://127.0.0.1:3000`（または自前 Redmine）
+
+## License
+
+[MIT](./LICENSE)
+
+## ファイル構成
+
+```
+skills/<name>/SKILL.md   # 正本スキル
+skills/navigation-protocol.md
+.cursor/skills/          # Cursor 向けシンボリックリンク
+.cursor/mcp.json         # Cursor MCP（秘密は .env または mcp-redmine）
+.env.example
+.opencode/
+  opencode.jsonc.example # 追跡するテンプレート
+  opencode.jsonc         # ローカル秘密設定（gitignore）
+tools/
+  redmine_helper.sh      # MCP 非接続時の Redmine CLI
+  validate-opencode.mjs  # JSONC 構文検証
+AGENTS.md
+README.md
+README-JP.md
+LICENSE
+```
