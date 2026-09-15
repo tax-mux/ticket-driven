@@ -4,31 +4,34 @@
 
 - **カレントディレクトリと対になるプロジェクトを第一選択肢として考える**
   - デフォルトでは、作業中のカレントディレクトリが指すリポジトリ/プロジェクトを優先して判断する
-  - 例: `$HOME/work/develop/[project-name]` → `ticket-driven` / `{your-redmine-project}`
+  - 例: `$HOME/work/develop/[project-name]` → リポジトリ名 / Redmine プロジェクト識別子
 - **文脈でプロジェクトを選択**
   - チケットのRedmineプロジェクト情報（またはチケット番号の所属）とカレントディレクトリを照合
   - チケットが既存の場合は `project_id` に従う
   - 新規チケット作成時はカレントディレクトリに対応するプロジェクトを優先
   - 判断が迷う場合は `ticket-refine` または `ticket-driven` スキルでワークフロー検証
 - `issue_id` 未確定のままコード変更・コミット・PR しない
-- 日常は最小フローで **自動完走**: 精緻化（要件充足）→ 分割判定 → 着手ノート → テスト計画（漏れ拾い） → 実装（リファクタ意識） → テスト実行 → code-refactor 事後検討 → 完了ノート → Resolved
+- 日常は最小フローで **自動完走**: 精緻化（要件充足）→ 分割判定 → 着手ノート → テスト計画（漏れ拾い） → 実装（リファクタ意識）→ テスト実行 → code-refactor 事後検討 → 完了ノート → Resolved
 - 着手時に要件が不足、または完了条件が検証不能なら、確認せず `ticket-refine` してから実装（DoD があるだけではスキップしない。充足済みなら更新だけスキップ）
 - 精緻化の直後に `ticket-split` を **機能構成→セッション完走** で判定する（1 PR の大きさでは判定しない。1セッションで収まる単一まとまりなら分割不要。粗い子は再分割。詳細は `skills/ticket-driven/SKILL.md`）
 
 ## Redmine プロジェクト
 
+ローカル環境に合わせて埋める（秘密は `.env` / 環境変数のみ）。
+
 | 項目 | 値 |
 |------|-----|
 | プロジェクト識別子 | `{your-redmine-project}` |
-| プロジェクト名 | macbook pro 作業環境 |
+| プロジェクト名 | （Redmine 上の表示名） |
 | APIキー | 環境変数 `REDMINE_API_KEY` に設定 |
-| URL | `http://127.0.0.1:3000` |
+| URL | `http://127.0.0.1:3000`（または自前 Redmine） |
 
-## GitBucket
+## Git / リモート
 
 | 項目 | 値 |
 |------|-----|
-| URL | `http://{gitbucket-host}:8080` |
+| ホスティング | GitBucket / GitHub 等（環境依存） |
+| URL | `http://{git-host}:{port}` または `https://github.com/{owner}/{repo}` |
 | リポジトリ | `ticket-driven` |
 
 ## スキル配置
@@ -46,13 +49,13 @@
 
 コピーが残ったら `./tools/sync-skill-links.sh` で正本リンクに戻す。
 
-Hermes の `agent.system_prompt` はスキルとは別のスナップショット。現行 TelosPVL ID（OpenCode `~/.config/opencode/scripts/telospvl-boot-lib.js` と同じ）を取り込む:
+Hermes の `agent.system_prompt` はスキルとは別のスナップショット。現行 TelosPVL ID（OpenCode `$HOME/.config/opencode/scripts/telospvl-boot-lib.js` と同じ）を取り込む:
 
 ```bash
 hermes-sync-opencode-rules
 ```
 
-実体は `~/.hermes/scripts/sync-opencode-global-rules.py`。反映には Hermes の再起動が必要（再起動は自動化しない）。
+実体は `$HOME/.hermes/scripts/sync-opencode-global-rules.py`。反映には Hermes の再起動が必要（再起動は自動化しない）。
 
 スキル選択の索引（いつ→スキル）: `skills/navigation-protocol.md`
 
