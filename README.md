@@ -61,8 +61,10 @@ Canonical skills live in `skills/`. Symlink; do not copy:
 |---------|----------|
 | OpenCode | `~/.agents/skills/<name>` |
 | Hermes | `~/.hermes/skills/software-development/<name>` |
+| pi (host) | `~/.pi/agent/skills/<name>` |
+| pi (compose) | bind-mount of canonical `skills/ticket-*` (see compose `docker-compose.yml`) |
 
-Restart OpenCode / Hermes if needed.
+Restart OpenCode / Hermes / pi if needed.
 
 Hermes `agent.system_prompt` is a snapshot. Sync current TelosPVL IDs / INIT_BOOTSTRAP with:
 

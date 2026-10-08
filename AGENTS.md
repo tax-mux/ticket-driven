@@ -43,6 +43,7 @@
 | `~/.cursor/skills/<name>` | Cursor 個人グローバル（正本への symlink） |
 | `~/.agents/skills/<name>` | OpenCode 既定探索（正本への symlink。コピー禁止） |
 | `~/.hermes/skills/software-development/<name>` | Hermes（正本への symlink。コピー禁止） |
+| `~/.pi/agent/skills/<name>` | pi ホスト（正本への symlink。コピー禁止。compose は bind-mount） |
 | `.opencode/opencode.jsonc` | OpenCode 登録（gitignore。example からコピー） |
 | `.cursor/mcp.json` | Cursor MCP（Redmine / MemPalace / TelosPVL）。秘密は `.env`） |
 | `.env` | Cursor MCP 用秘密（gitignore。`.env.example` からコピー） |

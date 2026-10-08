@@ -3,6 +3,7 @@
 # OpenCode: ~/.agents/skills
 # Hermes:   ~/.hermes/skills/software-development
 # Cursor 個人: ~/.cursor/skills（既にリンクなら維持）
+# pi（ホスト）: ~/.pi/agent/skills（コンテナは compose で同正本を bind-mount）
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -54,6 +55,7 @@ DESTS=(
     "$HOME/.agents/skills"
     "$HOME/.hermes/skills/software-development"
     "$HOME/.cursor/skills"
+    "$HOME/.pi/agent/skills"
 )
 
 echo "canonical: $CANONICAL"
