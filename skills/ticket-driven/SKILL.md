@@ -99,13 +99,21 @@ D. 完了
 
 | タイミング | 対象票 | 必須 |
 |------------|--------|------|
-| B 着手 | 実装チケット | `notes`（`着手:` + 委任パック）+ **`status_id`=進行中** |
+| A create / refine / split | 実装チケット（子、または分割不要の単一票）。親ハブは推奨 | **`estimated_hours`**＝**人手想定**（エージェント無しの人時。エージェント前提で短くしない）。未設定のまま B に進まない。`due_date` はカレンダー用でブースト計算に使わない |
+| B 着手 | 実装チケット | `notes`（`着手:` + 委任パック）+ **`status_id`=進行中**（`estimated_hours` 未設定なら先に埋める） |
 | C 途中 | 同左 | 主要 DoD 完了ごとに **`done_ratio`**（0→25→50→75。詰まり報告以外の連投は不要） |
-| D 完了 | 同左 | `notes`（`完了:` + クローズ監査）+ **`status_id`=Resolved** + **`done_ratio`=100** |
+| D 完了 | 同左 | `notes`（`完了:` + クローズ監査 + **`ブースト:`**）+ **`status_id`=Resolved** + **`done_ratio`=100** |
 | 子が Resolved | **親** | **`done_ratio`** = 完了子数 / 子総数（%）。全子後に親 Resolved |
 
 - New のまま実装しない / 0% のまま Resolved しない
-- 着手〜完了中の status・done_ratio は **`ticket-driven` 内で更新**（`ticket-update` に逃がさない）
+- 着手〜完了中の status・done_ratio・estimated_hours は **`ticket-driven` 内で更新**（`ticket-update` に逃がさない）
+
+### 人手想定とブースト（`estimated_hours`）
+
+- **意味**: Redmine 標準の `estimated_hours` ＝ **エージェント無し・人手だけの想定工数（人時）**。カスタムフィールドは作らない
+- **必須対象**: 実装チケット。親ハブにも機能全体の人手想定を入れると月次のブースト感が読みやすい（任意だが推奨）
+- **計算**（完了ノート）: `経過h` ≈ `closed_on` − `created_on`（壁時計・小数可）。`ブースト ≈ 想定h / 経過h`。`経過 < 0.05h` のときは倍率を参考扱いと明記
+- 書式・API 例は `ops.md` / `close-audit.md`。create 時の意味付けは `ticket-create` の `fields.md`
 
 OpenCode/Hermes で子を委任する場合: B のあと `delegate-subagent.md`（**1 子ずつ直列**）。
 
