@@ -61,8 +61,10 @@ export REDMINE_API_KEY=your_key
 |------------|------|
 | OpenCode | `~/.agents/skills/<name>` |
 | Hermes | `~/.hermes/skills/software-development/<name>` |
+| pi（ホスト） | `~/.pi/agent/skills/<name>` |
+| pi（compose） | `docker-compose.yml` が正本 `skills/ticket-*` を bind-mount（イメージ焼き込みより優先） |
 
-反映には OpenCode / Hermes の再起動が必要な場合あり。
+反映には OpenCode / Hermes / pi の再起動が必要な場合あり。
 
 Hermes の `~/.hermes/config.yaml` `agent.system_prompt` はスナップショット。現行 TelosPVL ID と INIT_BOOTSTRAP を取り込む:
 
