@@ -49,7 +49,7 @@ export REDMINE_API_KEY=your_key
   - Or `cp .env.example .env` and fill keys (`.env` is gitignored)
   - Reload the Cursor window after changes
 
-### 5. OpenCode / Hermes
+### 5. OpenCode / Hermes / pi (host)
 
 Canonical skills live in `skills/`. Symlink; do not copy:
 
@@ -57,12 +57,14 @@ Canonical skills live in `skills/`. Symlink; do not copy:
 ./tools/sync-skill-links.sh
 ```
 
+**Warning:** This script writes under your **HOME (global agent paths)**, not only inside the repo (`~/.agents/skills`, `~/.hermes/skills/software-development`, `~/.cursor/skills`, `~/.pi/agent/skills`). Existing same-named dirs may be backed up then replaced. Skip the script if you only cloned for inspection or do not want HOME changes.
+
 | Runtime | Location |
 |---------|----------|
 | OpenCode | `~/.agents/skills/<name>` |
 | Hermes | `~/.hermes/skills/software-development/<name>` |
 | pi (host) | `~/.pi/agent/skills/<name>` |
-| pi (compose) | bind-mount of canonical `skills/ticket-*` (see compose `docker-compose.yml`) |
+| pi (compose) | bind-mount of canonical `skills/ticket-*` (see compose `docker-compose.yml`; not this script) |
 
 Restart OpenCode / Hermes / pi if needed.
 

@@ -49,7 +49,7 @@ export REDMINE_API_KEY=your_key
   - または `cp .env.example .env` してキーを埋める（`.env` は gitignore）
   - 反映には Cursor のウィンドウ再読み込みが必要
 
-### 5. OpenCode / Hermes
+### 5. OpenCode / Hermes / pi（ホスト）
 
 正本は `skills/`。コピーを置かず、次へ symlink する。
 
@@ -57,12 +57,14 @@ export REDMINE_API_KEY=your_key
 ./tools/sync-skill-links.sh
 ```
 
+**注意:** このスクリプトはリポジトリ内ではなく、**実行ユーザーのホーム配下（グローバル）** に symlink を張る（`~/.agents/skills` / `~/.hermes/skills/software-development` / `~/.cursor/skills` / `~/.pi/agent/skills`）。既存の同名ディレクトリはバックアップ後に置き換える。クローン検証だけ・ホームを触りたくない場合は実行しない。
+
 | ランタイム | 配置 |
 |------------|------|
 | OpenCode | `~/.agents/skills/<name>` |
 | Hermes | `~/.hermes/skills/software-development/<name>` |
 | pi（ホスト） | `~/.pi/agent/skills/<name>` |
-| pi（compose） | `docker-compose.yml` が正本 `skills/ticket-*` を bind-mount（イメージ焼き込みより優先） |
+| pi（compose） | `docker-compose.yml` が正本 `skills/ticket-*` を bind-mount（イメージ焼き込みより優先。本スクリプト対象外） |
 
 反映には OpenCode / Hermes / pi の再起動が必要な場合あり。
 

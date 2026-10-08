@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 # ticket-* / git-* / code-refactor をリポジトリ正本への symlink にする。
-# OpenCode: ~/.agents/skills
-# Hermes:   ~/.hermes/skills/software-development
-# Cursor 個人: ~/.cursor/skills（既にリンクなら維持）
-# pi（ホスト）: ~/.pi/agent/skills（コンテナは compose で同正本を bind-mount）
+#
+# !! 注意: リポジトリ内ではなく、実行ユーザーのホーム配下（グローバル）を書き換える。
+#    OpenCode:     ~/.agents/skills
+#    Hermes:       ~/.hermes/skills/software-development
+#    Cursor 個人:  ~/.cursor/skills
+#    pi（ホスト）: ~/.pi/agent/skills
+#    （pi コンテナは compose の bind-mount。本スクリプトは触らない）
+# 既存の実体ディレクトリはバックアップしてから symlink に置き換える。
+# ホームを汚したくない／他マシン用クローンだけのときは実行しないこと。
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -59,6 +64,11 @@ DESTS=(
 )
 
 echo "canonical: $CANONICAL"
+echo "WARNING: writes symlinks under your HOME (global agent skill dirs), not only this repo."
+echo "         targets: ~/.agents/skills ~/.hermes/skills/software-development ~/.cursor/skills ~/.pi/agent/skills"
+echo "         existing skill dirs may be moved to: $BACKUP_ROOT"
+echo "         Ctrl-C within 2s to abort."
+sleep 2
 for dest_root in "${DESTS[@]}"; do
     echo "== $dest_root"
     mkdir -p "$dest_root"
