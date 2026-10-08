@@ -67,8 +67,12 @@ echo "canonical: $CANONICAL"
 echo "WARNING: writes symlinks under your HOME (global agent skill dirs), not only this repo."
 echo "         targets: ~/.agents/skills ~/.hermes/skills/software-development ~/.cursor/skills ~/.pi/agent/skills"
 echo "         existing skill dirs may be moved to: $BACKUP_ROOT"
-echo "         Ctrl-C within 2s to abort."
-sleep 2
+if [ "${TICKET_DRIVEN_SKILL_SYNC_YES:-}" = "1" ]; then
+    echo "         TICKET_DRIVEN_SKILL_SYNC_YES=1 — skip abort wait."
+else
+    echo "         Ctrl-C within 2s to abort (or set TICKET_DRIVEN_SKILL_SYNC_YES=1)."
+    sleep 2
+fi
 for dest_root in "${DESTS[@]}"; do
     echo "== $dest_root"
     mkdir -p "$dest_root"
