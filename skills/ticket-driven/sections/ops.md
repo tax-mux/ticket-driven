@@ -51,7 +51,7 @@
   "action": "update",
   "issue_id": "{CHILD_ID}",
   "done_ratio": 100,
-  "notes": "完了: {概要} — テスト: {結果}\nクローズ監査: DoD全[x]=yes / 検証一致=yes / 親実装なし=yes / 範囲内=yes / 調査のみでない=yes / ステータス実体=yes / done_ratio実体=yes"
+  "notes": "完了: {概要} — テスト: {結果}\nクローズ監査: DoD全[x]=yes / 検証一致=yes / 親実装なし=yes / 範囲内=yes / 調査のみでない=yes / ステータス実体=yes / done_ratio実体=yes / 人手想定とブースト=yes\nブースト: 想定{estimated_hours}h / 経過{h}h ≈ {倍率}x"
 }
 ```
 
@@ -66,6 +66,52 @@
 ```
 
 ツール: `redmine_issues`。`add_note` action は無い。
+
+## 人手想定（`estimated_hours`）とブースト
+
+**意味**: `estimated_hours` ＝ **エージェント無し・人手だけの想定工数（人時）**。エージェントが速い前提で短く見積もらない。`due_date` は期限日用であり、ブースト計算には使わない。
+
+**いつ入れる**
+
+| タイミング | 必須 |
+|------------|------|
+| create / refine | 実装チケットに設定（未設定なら refine で埋める） |
+| split で子作成 | 各子に人手想定を付ける。親ハブにも機能全体の想定を推奨 |
+| B 着手直前 | まだ null なら **着手ノートより先に** update で入れる |
+
+create / update 例:
+
+```json
+{
+  "action": "create",
+  "project_id": "{プロジェクト}",
+  "tracker_id": 2,
+  "status_id": 1,
+  "subject": "タイトル",
+  "description": "説明",
+  "estimated_hours": 8
+}
+```
+
+```json
+{
+  "action": "update",
+  "issue_id": "{ID}",
+  "estimated_hours": 8,
+  "notes": "精緻化: 人手想定 8h を estimated_hours に設定"
+}
+```
+
+フラット引数で弾かれるときだけ `redmine_api_request` PUT の `issue.estimated_hours` に逃げる。
+
+**ブースト行**（Resolved 直前の完了ノートに必須。`close-audit.md` と対）:
+
+```
+ブースト: 想定{estimated_hours}h / 経過{closed_on−created_on の h}h ≈ {倍率}x
+```
+
+- 経過は壁時計（小数可）。`経過 < 0.05h` なら `≈ —（経過極短・参考）` と書く
+- 倍率は `想定 / 経過`（小数1桁目安）。spent_hours 手入力は要求しない
 
 ## Redmine MCP 呼び出しの約束（この環境）
 

@@ -68,7 +68,8 @@
 
 ```
 完了: {概要} — テスト: {結果}
-クローズ監査: DoD全[x]=yes / 検証一致=yes / 親実装なし=yes / 範囲内=yes / 調査のみでない=yes / ステータス実体=yes / done_ratio実体=yes
+クローズ監査: DoD全[x]=yes / 検証一致=yes / 親実装なし=yes / 範囲内=yes / 調査のみでない=yes / ステータス実体=yes / done_ratio実体=yes / 人手想定とブースト=yes
+ブースト: 想定{estimated_hours}h / 経過{h}h ≈ {倍率}x
 ```
 
-監査が no の項目があるうちは **Resolved にしない**。status / done_ratio はノートだけでなく `get` で確認（`close-audit.md` / `ops.md`）。
+監査が no の項目があるうちは **Resolved にしない**。status / done_ratio / `estimated_hours` はノートだけでなく `get` で確認（`close-audit.md` / `ops.md`）。

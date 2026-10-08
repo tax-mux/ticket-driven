@@ -38,8 +38,14 @@
 - `priority_id`: 優先度
 - `assigned_to_id`: 担当者
 - `parent_id`: 親チケット
-- `due_date`: 期限（`YYYY-MM-DD`）
-- `estimated_hours`: 予定時間
+- `due_date`: 期限（`YYYY-MM-DD`）。カレンダー都合用。**ブースト計算には使わない**
+
+## 人手想定（実装チケットでは実質必須）
+
+- `estimated_hours`: **エージェント無し・人手だけの想定工数（人時）**
+- エージェントが速い前提で短く見積もらない
+- `ticket-driven` では create / refine / split / 着手前に入れ、完了ノートの `ブースト:` と対になる（詳細は `ticket-driven` の `ops.md`）
+- 例: 人手なら半日 → `4`、1営業日 → `8`、1週間相当 → `40` 目安
 
 ## 逃げ道（relations 等のみ）
 

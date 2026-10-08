@@ -21,23 +21,22 @@
 
 ```json
 {
-  "method": "POST",
-  "path": "/issues.json",
-  "body": {
-    "issue": {
-      "project_id": "{プロジェクトID}",
-      "parent_issue_id": "{ID}",
-      "tracker_id": 2,
-      "subject": "{セッション単位のタイトル}",
-      "description": "{説明}",
-      "priority_id": 2
-    }
-  }
+  "action": "create",
+  "project_id": "{プロジェクトID}",
+  "parent_id": "{親ID}",
+  "tracker_id": 2,
+  "status_id": 1,
+  "subject": "{セッション単位のタイトル}",
+  "description": "{説明}",
+  "priority_id": 2,
+  "estimated_hours": 4
 }
 ```
-ツール: `redmine_api_request`（`redmine_issues` に create は無い）
+ツール: `redmine_issues`（推奨）。逃げ道だけ `redmine_api_request` POST `/issues.json`（`parent_issue_id` / `estimated_hours`）。
 
-`description` は `templates.md` を **埋めた本文**。プレースホルダや見出しだけの子は作らない。親と **同じプロジェクト** に作る。プロジェクトを跨がない。
+- `description` は `templates.md` を **埋めた本文**。プレースホルダや見出しだけの子は作らない
+- 親と **同じプロジェクト** に作る。プロジェクトを跨がない
+- **`estimated_hours`**: その子の **人手想定（人時）**。エージェント前提で短くしない。親ハブにも機能全体の人手想定を推奨（`ticket-driven` の `ops.md`）
 
 ## 3. 関連付け
 
