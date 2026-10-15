@@ -38,7 +38,6 @@ cp .opencode/opencode.jsonc.example .opencode/opencode.jsonc
 | Item | Description |
 |------|-------------|
 | `REDMINE_URL` / `REDMINE_API_KEY` | Local Redmine |
-| `X-API-KEY` (telospvl) | TelosPVL API key |
 | `instructions` / `mempalace` paths | Machine-local paths (replace example placeholders) |
 
 ### 3. Environment (CLI)
@@ -53,7 +52,7 @@ export REDMINE_API_KEY=your_key
 
 - Project: `.cursor/skills/` → symlinks into `skills/` (shipped in-repo)
 - Personal: symlink the same names under `~/.cursor/skills/` for other workspaces
-- MCP: `.cursor/mcp.json` (Redmine / MemPalace / TelosPVL)
+- MCP: `.cursor/mcp.json` (Redmine / MemPalace; plus any private MCPs you use)
   - Prefer pointing Redmine at **mcp-redmine** (URL only; keep API keys out of client config)
   - Or `cp .env.example .env` and fill keys (`.env` is gitignored)
   - Reload the Cursor window after changes
@@ -77,13 +76,7 @@ Canonical skills live in `skills/`. Symlink; do not copy:
 
 Restart OpenCode / Hermes / pi if needed.
 
-Hermes `agent.system_prompt` is a snapshot. Sync current TelosPVL IDs / INIT_BOOTSTRAP with:
-
-```bash
-hermes-sync-opencode-rules
-```
-
-Restart is not automated; restart Hermes yourself.
+Hermes `agent.system_prompt` is a snapshot. When your private bootstrap / core rules change, re-sync with your usual Hermes sync tool (if installed), then restart Hermes yourself.
 
 ### 6. Validate
 
