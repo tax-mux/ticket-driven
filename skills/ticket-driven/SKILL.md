@@ -51,13 +51,14 @@ Redmine チケットを起点に開発タスクを駆動する。
 
 refine 後も DoD 不能／外部情報必須 → 質問は最大3つ。例外: 質問・設計のみ／読み取りのみ／「チケット不要」明示。
 
-起動例: `#N 着手` / `#N レビューして` / `#N 再開`
+起動例: `#N 着手` / `#N 再開` / `#N 評価して`（評価は `ticket-evaluate`）
 
 ## 目録
 
 | 開く条件 | 読むファイル |
 |----------|----------------|
-| ジャーナル **書式**（`分割:` / `着手:` 等の文言。実体は Redmine get） | スキル `sections/journal.md` |
+| `#N 評価` / 実装点検 / DoD 照合してジャーナルへ（コード変更なし） | スキル **`ticket-evaluate`**（本目録外。`skills/ticket-evaluate/SKILL.md`） |
+| ジャーナル **書式**（`分割:` / `着手:` / `評価:` 等の文言。実体は Redmine get） | スキル `sections/journal.md` |
 | 子（または単一票）の着手直前・委任の境界 | `sections/delegate-pack.md` |
 | 子をサブエージェントへ委任する（共通・並列禁止） | `sections/delegate-subagent.md` |
 | 上記 + OpenCode | `sections/delegate-subagent-opencode.md` |
@@ -88,8 +89,17 @@ B. 着手
 C. 実装
    → test-plan 確認 → 実装（refactor.md 予防）→ DoD 区切りで **done_ratio** → テスト実行 + DoD 検証
 
-D. 完了
-   → close-audit.md → 完了ノート + **status_id=Resolved** + **done_ratio=100** → コミット/PR は依頼時のみ（ops.md）
+D. レビュー提出
+   → 実装検証が終わったら **`status_id`=レビュー**（目安 id=7。必ず `redmine_metadata` で確認）+ `notes`（`レビュー提出:` 可）
+   → **進行中のまま解決しない**（レビューを飛ばして Resolved は禁止）
+
+E. 評価（別視点。原則 Cursor / `ticket-evaluate`）
+   → 票が **レビュー** のあいだに `評価:` を `notes` のみで書く（status / done_ratio は触らない）
+   → **不合格**: 実装側が **レビュー→進行中** に差し戻し、修正して D からやり直し。この時点で Resolved 禁止
+   → **合格 / 条件付き合格（ブロッカーなし）**: 実装側が F へ
+
+F. 完了
+   → close-audit.md（評価済み含む）→ 完了ノート + **`done_ratio`=100** + **`status_id`=Resolved**（レビュー→解決）→ コミット/PR は依頼時のみ（ops.md）
    → 子 Resolved 直後は **親 done_ratio** を更新（after-split.md）
 ```
 
@@ -102,11 +112,14 @@ D. 完了
 | A create / refine / split | 実装チケット（子、または分割不要の単一票）。親ハブは推奨 | **`estimated_hours`**＝**人手想定**（エージェント無しの人時。エージェント前提で短くしない）。未設定のまま B に進まない。`due_date` はカレンダー用でブースト計算に使わない |
 | B 着手 | 実装チケット | `notes`（`着手:` + 委任パック）+ **`status_id`=進行中**（`estimated_hours` 未設定なら先に埋める） |
 | C 途中 | 同左 | 主要 DoD 完了ごとに **`done_ratio`**（0→25→50→75。詰まり報告以外の連投は不要） |
-| D 完了 | 同左 | `notes`（`完了:` + クローズ監査 + **`ブースト:`**）+ **`status_id`=Resolved** + **`done_ratio`=100** |
+| D レビュー提出 | 同左 | **`status_id`=レビュー**（metadata で ID 確認。本環境目安 **7**） |
+| E 評価 | 同左 | `ticket-evaluate` が `評価:` **notes のみ**（status 変更禁止）。不合格時は実装側が **レビュー→進行中** |
+| F 完了 | 同左 | `notes`（`完了:` + クローズ監査 + **`ブースト:`**）+ **`done_ratio`=100** + **`status_id`=Resolved**（レビューから） |
 | 子が Resolved | **親** | **`done_ratio`** = 完了子数 / 子総数（%）。全子後に親 Resolved |
 
-- New のまま実装しない / 0% のまま Resolved しない
-- 着手〜完了中の status・done_ratio・estimated_hours は **`ticket-driven` 内で更新**（`ticket-update` に逃がさない）
+- New のまま実装しない / 0% のまま Resolved しない / **進行中のまま Resolved しない**（必ずレビュー経由）
+- 「フィードバック」(status 4) は人からの差し戻し用。LLM 実装評価には **レビュー** を使う（混同禁止）
+- 着手〜完了中の status・done_ratio・estimated_hours は **`ticket-driven` 内で更新**（`ticket-update` に逃がさない）。評価ノートだけは status を触らない例外
 
 ### 人手想定とブースト（`estimated_hours`）
 

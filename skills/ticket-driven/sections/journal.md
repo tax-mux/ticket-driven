@@ -16,9 +16,12 @@
 | テスト実行 | 完了ノートに含めてよい（`完了: ... — テスト: {結果}`） |
 | リファクタ（予防） | `リファクタ: 予防 — {要約}`（大きめの分割・浅化時のみ） |
 | リファクタ検討 | `リファクタ検討: {実施|見送り} — {要約}`（しきい値超過時のみ） |
-| 完了 | `完了: {概要} — {検証結果}` |
+| レビュー提出 | `レビュー提出: {要約}` ＋ **`status_id`=レビュー**（実装検証後。進行中のまま解決しない） |
+| 差し戻し（評価不合格） | `差し戻し: 評価不合格 — {要約}` ＋ **`status_id`=進行中**（実装側が行う。評価側は status を触らない） |
+| 完了 | `完了: {概要} — {検証結果}`（評価合格後。クローズ監査に **評価済み=yes**） |
+| 評価（実装点検。`ticket-evaluate`） | 票が **レビュー** のあいだに `評価: {合格\|条件付き合格\|不合格} — {1行要約}` ＋ DoD／検証／注意点（書式は `ticket-evaluate` の `journal-format.md`）。**status / done_ratio は変えない**。不合格時は実装側へ差し戻しを促す（評価ノート内の「次:」で可） |
 
-**status_id / done_ratio は上記タイミングで必ず Redmine API 更新**（SKILL.md「Redmine 更新」）。省略禁止。
+**status_id / done_ratio は上記タイミングで必ず Redmine API 更新**（SKILL.md「Redmine 更新」）。省略禁止。評価ノートだけは status を触らない例外。
 
 中間の `notes` 連投（進捗報告コメント）は不要。詰まったときだけ追記してよい。
 
@@ -68,8 +71,8 @@
 
 ```
 完了: {概要} — テスト: {結果}
-クローズ監査: DoD全[x]=yes / 検証一致=yes / 親実装なし=yes / 範囲内=yes / 調査のみでない=yes / ステータス実体=yes / done_ratio実体=yes / 人手想定とブースト=yes
+クローズ監査: DoD全[x]=yes / 検証一致=yes / 親実装なし=yes / 範囲内=yes / 調査のみでない=yes / ステータス実体=yes / done_ratio実体=yes / 人手想定とブースト=yes / 評価済み=yes
 ブースト: 想定{estimated_hours}h / 経過{h}h ≈ {倍率}x
 ```
 
-監査が no の項目があるうちは **Resolved にしない**。status / done_ratio / `estimated_hours` はノートだけでなく `get` で確認（`close-audit.md` / `ops.md`）。
+監査が no の項目があるうちは **Resolved にしない**。status / done_ratio / `estimated_hours` はノートだけでなく `get` で確認（`close-audit.md` / `ops.md`）。進行中から直解決しない（レビュー＋評価済みが前提）。

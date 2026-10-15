@@ -72,6 +72,7 @@ hermes-sync-opencode-rules
 | `ticket-split` | チケット分割（機能構成→セッション完走） |
 | `ticket-status` | ステータス別アクション |
 | `ticket-update` | チケット更新 |
+| `ticket-evaluate` | 実装を DoD 照合で点検し、評価をジャーナルへ追記 |
 | `git-commit` | Gitコミット（依頼時。標準ルールと併用） |
 | `git-pr` | PR作成（gh / GitBucket API） |
 | `git-branch` | ブランチ操作 |

@@ -44,18 +44,42 @@
 }
 ```
 
-完了（**先に**必要なら `done_ratio`。順序は下記「done_ratio とステータス」）:
+レビュー提出（実装検証後。**進行中のまま解決しない**）:
+
+```json
+{
+  "action": "update",
+  "issue_id": "{CHILD_ID}",
+  "status_id": 7,
+  "notes": "レビュー提出: 実装検証済み。ticket-evaluate 待ち。"
+}
+```
+
+`status_id` の **7** は本環境の「レビュー」目安。必ず `redmine_metadata` `kind: "issue_statuses"` で確認する。
+
+評価不合格時の差し戻し（実装側。評価側は status を触らない）:
+
+```json
+{
+  "action": "update",
+  "issue_id": "{CHILD_ID}",
+  "status_id": 2,
+  "notes": "差し戻し: 評価不合格 — {要約}. 進行中に戻して修正する。"
+}
+```
+
+完了（評価合格後。**先に**必要なら `done_ratio`。順序は下記「done_ratio とステータス」）:
 
 ```json
 {
   "action": "update",
   "issue_id": "{CHILD_ID}",
   "done_ratio": 100,
-  "notes": "完了: {概要} — テスト: {結果}\nクローズ監査: DoD全[x]=yes / 検証一致=yes / 親実装なし=yes / 範囲内=yes / 調査のみでない=yes / ステータス実体=yes / done_ratio実体=yes / 人手想定とブースト=yes\nブースト: 想定{estimated_hours}h / 経過{h}h ≈ {倍率}x"
+  "notes": "完了: {概要} — テスト: {結果}\nクローズ監査: DoD全[x]=yes / 検証一致=yes / 親実装なし=yes / 範囲内=yes / 調査のみでない=yes / ステータス実体=yes / done_ratio実体=yes / 人手想定とブースト=yes / 評価済み=yes\nブースト: 想定{estimated_hours}h / 経過{h}h ≈ {倍率}x"
 }
 ```
 
-その直後に解決（同じ update にまとめても可。まとめるなら `done_ratio` と `status_id: 3` を **同時**に送る）:
+その直後に解決（レビュー→解決。同じ update にまとめても可。まとめるなら `done_ratio` と `status_id: 3` を **同時**に送る）:
 
 ```json
 {
@@ -169,10 +193,12 @@ Tier 3 の例:
 |------|-------------|----------------------|
 | 新規 | 1 | 可 |
 | 進行中 | 2 | 可 |
-| 解決 | 3 | **完了はここまで** |
+| レビュー | 7 | **実装検証後・評価待ち**（LLM 評価用。フィードバックと混同しない） |
+| 解決 | 3 | **完了はここまで**（レビュー経由） |
+| フィードバック | 4 | 人からの差し戻し用（LLM 評価には使わない） |
 | 終了 | 5 | **使わない**（権限外・誤用多発。人が閉じる） |
 
-標準遷移（エージェント）: `New → In Progress → Resolved`。Feedback 経由あり。
+標準遷移（エージェント）: `新規 → 進行中 → レビュー →（不合格なら進行中）→ 解決`。人の Feedback 経由あり。
 
 ## done_ratio とステータス（順序必須）
 

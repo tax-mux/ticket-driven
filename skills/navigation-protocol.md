@@ -17,6 +17,7 @@
 | いつ（迷いどころ） | 開くスキル | パス |
 |--------------------|------------|------|
 | `#N 着手` / 実装して / 完走して / チケット駆動で進める / `#N 再開` / 状況把握して再開 | ticket-driven | `skills/ticket-driven/SKILL.md` |
+| `#N 評価` / 実装を点検 / 実装レビュー（評価） / DoD 照合してジャーナルへ | ticket-evaluate | `skills/ticket-evaluate/SKILL.md` |
 | 要件が薄い・命題を膨らませる・精緻化 | ticket-refine | `skills/ticket-refine/SKILL.md` |
 | 分割する？ / 子チケット / セッション完走サイズ | ticket-split | `skills/ticket-split/SKILL.md` |
 | 新規起票 | ticket-create | `skills/ticket-create/SKILL.md` |
@@ -40,6 +41,9 @@
 | 再開はすぐ実装？ | しない。`ticket-driven` の `resume.md`：Redmine journals get → リプラン要否 → 共通ステップ |
 | create と driven？ | 起票だけなら `ticket-create`。実装まで含むなら `ticket-driven`（必要なら create を呼ぶ） |
 | update と driven？ | **着手〜完了の status / done_ratio は `ticket-driven` 内で必ず更新**（別スキルに逃がさない）。担当者変更・説明だけ・単発コメント等は `ticket-update` |
+| 評価と close-audit？ | Resolved 直前の自己監査は `ticket-driven` の `close-audit.md`。依頼の「実装を点検・評価してジャーナルへ」は `ticket-evaluate`（コードは触らず `評価:` ノートのみ） |
+| 評価と git-diff？ | diff 観点だけなら `git-diff`。チケット DoD 照合＋ジャーナル追記は `ticket-evaluate` |
+| 評価で UI も見る？ | 画面票は `ticket-evaluate` がトンマナ／ユーザビリティを必須化。詳細ヒューリスティックは `ui-critique`。スクショ手順は `ui-verify` |
 | git-* を先に？ | チケット駆動中のコミット/PRはユーザー依頼時。手順は各 git-*。流れの親は `ticket-driven` |
 
 ## スキルマッピング（INPUT → PATH）
@@ -57,6 +61,7 @@ MemPalace / 脊髄反射用のローマ字キー。上の「いつ → スキル
 | ticketrelation | skills/ticket-relation/SKILL.md |
 | ticketrefine | skills/ticket-refine/SKILL.md |
 | ticketsplit | skills/ticket-split/SKILL.md |
+| ticketevaluate | skills/ticket-evaluate/SKILL.md |
 | gitcommit | skills/git-commit/SKILL.md |
 | gitpr | skills/git-pr/SKILL.md |
 | gitbranch | skills/git-branch/SKILL.md |

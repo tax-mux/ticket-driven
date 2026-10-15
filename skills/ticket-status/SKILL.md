@@ -12,7 +12,7 @@ description: チケットのステータスに応じた対応手順。ステー�
 
 | 開く条件 | 読むファイル |
 |----------|----------------|
-| New / In Progress / Feedback / Resolved / Closed の手順 | `sections/by-status.md` |
+| New / In Progress / Review / Feedback / Resolved / Closed の手順 | `sections/by-status.md` |
 | 優先度別の対応表 | `sections/by-priority.md` |
 
 ## 概要
