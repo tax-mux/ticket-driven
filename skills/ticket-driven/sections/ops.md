@@ -7,7 +7,7 @@
 - **書き込み:** `redmine_issues` `action: "update"` + `notes`（+ 必要なら `status_id` / `done_ratio`）。逃げ道として `redmine_api_request` PUT の `issue.notes` も可
 - **禁止:** 作業リポジトリ内の `.ticket-driven/`、`journal.md`、`read_file` でジャーナルを探す
 - **禁止:** 子の `parent_issue_id` 紐付けだけ／ローカルメモを分割証拠の代わりにする
-- **補助:** MemPalace drawer は Redmine の代わりにしない（不足分の get を先）
+- **補助:** 外部記憶は任意。未接続でも Redmine だけで完結する。接続していても Redmine の代わりにしない（不足分の get を先）
 
 ## ジャーナル（notes）最短例 — 分割証拠・着手・完了
 
@@ -168,7 +168,7 @@ Redmine get は **必要最小の `include`** に留める。一覧は常に Tie
 - 原則 **下位 Tier から**試し、情報が足りなければ 1 段だけ上げる
 - **親ハブに実装着手しない**。親は Tier 2 まで。分割証拠が journal に無いときだけ Tier 3
 - **委任パック＋description** で DoD・検証・依存が読めるなら、再開も Tier 1 でよい（詳細は `resume.md`）
-- MemPalace drawer に要約があれば **先に drawer**、Redmine は不足分だけ get
+- 外部記憶があっても **Tier 取得の前提にしない**（Redmine get が足りる）。要約はヒント程度
 - **同一セッション**で同票を Tier 3 で再 get しない（既に読んだ journals を再利用）
 
 Tier 1 の例:
