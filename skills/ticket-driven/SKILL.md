@@ -88,6 +88,7 @@ B. 着手
 
 C. 実装
    → test-plan 確認 → 実装（refactor.md 予防）→ DoD 区切りで **done_ratio** → テスト実行 + DoD 検証
+   → **UI・画面を触ったら** スクショをチケット添付（`ui-verify.md`。不能時は `UI証拠なし:`）
 
 D. レビュー提出
    → 実装検証が終わったら **`status_id`=レビュー**（目安 id=7。必ず `redmine_metadata` で確認）+ `notes`（`レビュー提出:` 可）
