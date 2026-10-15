@@ -13,7 +13,7 @@
 {
   "action": "get",
   "issue_id": "{N}",
-  "include": ["journals", "children", "relations"]
+  "include": ["journals", "children", "relations", "attachments"]
 }
 ```
 
@@ -22,8 +22,10 @@
 - description: 背景・目的・**範囲**・**完了条件**・**テスト範囲**・影響範囲
 - journals: `着手:` / `完了:` / 委任パック・実装パス・検証結果
 - children / relations: 親ハブか実装票か、先行・後続
+- **attachments:** スクショ・Playwright 結果など。画面票では **コードを読む前に** 有無を確認（`criteria.md` UI 証拠）
 
-**禁止:** Redmine 未 get のまま「実装が分からない」と丸投げ。先に get。
+**禁止:** Redmine 未 get のまま「実装が分からない」と丸投げ。先に get。  
+**禁止:** 画面票で添付未確認のまま「UI 実機未確認」と書いて `合格` / `条件付き合格` にする。
 
 ### 2. 対象の確定
 

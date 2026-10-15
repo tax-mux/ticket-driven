@@ -49,11 +49,13 @@ description: >-
 
 ## 概要（最短）
 
-1. `redmine_issues` **get** `#N`（`include: ["journals","children","relations"]`）
-2. description の **完了条件・範囲・テスト範囲** と、着手／完了ジャーナルから **実装パス** を特定
+1. `redmine_issues` **get** `#N`（`include: ["journals","children","relations","attachments"]`）
+2. description の **完了条件・範囲・テスト範囲** と、着手／完了ジャーナルから **実装パス** を特定。**画面票は先に attachments（スクショ等）の有無を確認**（無ければ関連票も。規則は `criteria.md`）
 3. 該当ソース・テストを読み、可能ならチケット記載のテストを実行
-4. DoD 対応表＋品質（Q1–Q5）＋注意点をまとめ、`notes` のみで `評価:` を追記（書式は `journal-format.md`）
+4. DoD 対応表＋品質（Q1–Q5）＋UI 証拠＋注意点をまとめ、`notes` のみで `評価:` を追記（書式は `journal-format.md`）
 5. ユーザーへ要約を返し、ジャーナル追記済みであることを明示
+
+**画面票:** DoD／テスト範囲に画面到達・手動 UI があるのにチケット上の画面証拠が無い → **不合格**（API／コード PASS だけでは上げない）。
 
 起動例: `#N 評価して` / `#N 実装を点検して` / `#N の実装をレビューして（評価）`
 
