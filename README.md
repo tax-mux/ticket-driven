@@ -10,6 +10,15 @@ These skills shine when [**mcp-redmine**](https://github.com/tax-mux/mcp-redmine
 
 Without mcp-redmine you can still use `./tools/redmine_helper.sh` as a CLI fallback, but the full agent workflow is designed for mcp-redmine.
 
+### Status flow (implementation tickets)
+
+Typical agent path: **New → In Progress → Review → Resolved**.
+
+- After implementation checks, move to **Review** (do not resolve from In Progress).
+- Run **`ticket-evaluate`** while the issue is in Review (`評価:` notes only; no status change).
+- On fail: implementer returns Review → In Progress. On pass: close-audit, then Review → Resolved.
+- Redmine “Feedback” stays for human pushback; LLM evaluation uses **Review**. Confirm numeric `status_id` via `redmine_metadata` (this environment’s Review is often `7`).
+
 ## Setup
 
 ### 1. Dependencies
@@ -96,6 +105,7 @@ Canonical files are `skills/<name>/SKILL.md`. Index: `skills/navigation-protocol
 | `ticket-refine` | Refine requirements before split |
 | `ticket-relation` | Issue relations |
 | `ticket-split` | Split by capability → session-sized children |
+| `ticket-evaluate` | Implementation review vs DoD → `評価:` journal (Review status; no status change) |
 | `ticket-status` | Status-based actions |
 | `ticket-update` | Update fields / description |
 

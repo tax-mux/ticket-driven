@@ -10,6 +10,15 @@ Redmine チケットを起点に開発を駆動する AI エージェント用�
 
 mcp-redmine が無い場合でも `./tools/redmine_helper.sh` で CLI フォールバックは可能だが、エージェント完走の本線は mcp-redmine 向けである。
 
+### ステータスフロー（実装チケット）
+
+エージェント通常経路: **新規 → 進行中 → レビュー → 解決**。
+
+- 実装検証後は **レビュー** へ（進行中のまま解決しない）
+- レビュー中に **`ticket-evaluate`**（`評価:` は notes のみ。status は触らない）
+- 不合格: 実装側がレビュー→進行中へ差し戻し。合格: クローズ監査のうえレビュー→解決
+- 「フィードバック」は人の差し戻し用。LLM 評価は **レビュー** を使う。数値 `status_id` は `redmine_metadata` で確認（本環境のレビューは目安 `7`）
+
 ## セットアップ
 
 ### 1. 依存関係
@@ -96,6 +105,7 @@ npm run validate:opencode
 | `ticket-refine` | チケット精緻化（分割前の要件充足） |
 | `ticket-relation` | チケット関連付け |
 | `ticket-split` | チケット分割（機能構成→セッション完走） |
+| `ticket-evaluate` | 実装を DoD 照合して `評価:` ジャーナルへ（レビュー状態・status 変更なし） |
 | `ticket-status` | ステータス別アクション |
 | `ticket-update` | チケット更新 |
 
