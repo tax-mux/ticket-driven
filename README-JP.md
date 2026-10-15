@@ -38,7 +38,6 @@ cp .opencode/opencode.jsonc.example .opencode/opencode.jsonc
 | 項目 | 説明 |
 |------|------|
 | `REDMINE_URL` / `REDMINE_API_KEY` | ローカル Redmine |
-| `X-API-KEY`（telospvl） | TelosPVL API キー |
 | `instructions` / `mempalace` のパス | マシン固有パス（example のプレースホルダを置換） |
 
 ### 3. 環境変数（CLI 用）
@@ -53,7 +52,7 @@ export REDMINE_API_KEY=your_key
 
 - プロジェクト: `.cursor/skills/` → `skills/` へのシンボリックリンク（リポジトリ同梱）
 - 個人: `~/.cursor/skills/` に同名リンクを張ると他ワークスペースでも利用可
-- MCP: `.cursor/mcp.json`（Redmine / MemPalace / TelosPVL）
+- MCP: `.cursor/mcp.json`（Redmine / MemPalace。ほか私用 MCP があれば追加）
   - Redmine は **mcp-redmine** の URL 接続を推奨（クライアント設定に API キーを置かない）
   - または `cp .env.example .env` してキーを埋める（`.env` は gitignore）
   - 反映には Cursor のウィンドウ再読み込みが必要
@@ -77,13 +76,7 @@ export REDMINE_API_KEY=your_key
 
 反映には OpenCode / Hermes / pi の再起動が必要な場合あり。
 
-Hermes の `~/.hermes/config.yaml` `agent.system_prompt` はスナップショット。現行 TelosPVL ID と INIT_BOOTSTRAP を取り込む:
-
-```bash
-hermes-sync-opencode-rules
-```
-
-再起動は自動化しない。ユーザーが Hermes を再起動する。
+Hermes の `agent.system_prompt` はスナップショット。私用のブートストラップ／コアルールを更新したあとは、普段使っている Hermes 同期手段で取り込み、Hermes を再起動する（再起動は自動化しない）。
 
 ### 6. 検証
 
