@@ -38,7 +38,7 @@ cp .opencode/opencode.jsonc.example .opencode/opencode.jsonc
 | Item | Description |
 |------|-------------|
 | `REDMINE_URL` / `REDMINE_API_KEY` | Local Redmine |
-| `instructions` / `mempalace` paths | Machine-local paths (replace example placeholders) |
+| `instructions` paths | Machine-local paths (replace example placeholders). Optional memory / other MCP entries are yours to add — not required |
 
 ### 3. Environment (CLI)
 
@@ -52,8 +52,9 @@ export REDMINE_API_KEY=your_key
 
 - Project: `.cursor/skills/` → symlinks into `skills/` (shipped in-repo)
 - Personal: symlink the same names under `~/.cursor/skills/` for other workspaces
-- MCP: `.cursor/mcp.json` (Redmine / MemPalace; plus any private MCPs you use)
-  - Prefer pointing Redmine at **mcp-redmine** (URL only; keep API keys out of client config)
+- MCP: `.cursor/mcp.json`
+  - Connect **mcp-redmine** for the full ticket-driven loop (URL only; keep API keys out of client config)
+  - Other MCPs (long-term memory helpers, etc.) are **optional** — skip them if you do not use them
   - Or `cp .env.example .env` and fill keys (`.env` is gitignored)
   - Reload the Cursor window after changes
 
