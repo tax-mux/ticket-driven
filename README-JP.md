@@ -38,7 +38,7 @@ cp .opencode/opencode.jsonc.example .opencode/opencode.jsonc
 | 項目 | 説明 |
 |------|------|
 | `REDMINE_URL` / `REDMINE_API_KEY` | ローカル Redmine |
-| `instructions` / `mempalace` のパス | マシン固有パス（example のプレースホルダを置換） |
+| `instructions` のパス | マシン固有パス（example のプレースホルダを置換）。記憶系など他 MCP は任意で追加すればよい（必須ではない） |
 
 ### 3. 環境変数（CLI 用）
 
@@ -52,8 +52,9 @@ export REDMINE_API_KEY=your_key
 
 - プロジェクト: `.cursor/skills/` → `skills/` へのシンボリックリンク（リポジトリ同梱）
 - 個人: `~/.cursor/skills/` に同名リンクを張ると他ワークスペースでも利用可
-- MCP: `.cursor/mcp.json`（Redmine / MemPalace。ほか私用 MCP があれば追加）
-  - Redmine は **mcp-redmine** の URL 接続を推奨（クライアント設定に API キーを置かない）
+- MCP: `.cursor/mcp.json`
+  - チケット駆動の本線には **mcp-redmine** を接続する（URL のみ。クライアント設定に API キーを置かない）
+  - 長期記憶などの他 MCP は **任意**。使わないなら入れなくてよい
   - または `cp .env.example .env` してキーを埋める（`.env` は gitignore）
   - 反映には Cursor のウィンドウ再読み込みが必要
 
