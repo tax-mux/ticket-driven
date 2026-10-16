@@ -9,6 +9,9 @@ node_modules/
 # OpenCode local config (may contain API keys)
 .opencode/opencode.jsonc
 
+# Cursor MCP local config (personal servers / URLs; copy from example)
+.cursor/mcp.json
+
 # Credentials / keys
 *.pem
 *.key

@@ -51,6 +51,12 @@ export REDMINE_API_KEY=your_key
 
 ### 4. Cursor
 
+```bash
+cp .cursor/mcp.json.example .cursor/mcp.json
+```
+
+`.cursor/mcp.json` は gitignore 済み。以下を自分の環境に合わせて編集する。
+
 - プロジェクト: `.cursor/skills/` → `skills/` へのシンボリックリンク（リポジトリ同梱）
 - 個人: `~/.cursor/skills/` に同名リンクを張ると他ワークスペースでも利用可
 - MCP: `.cursor/mcp.json`
@@ -132,7 +138,8 @@ Cursor ユーザールールの commit/PR 手順が既定。本リポの `git-*`
 skills/<name>/SKILL.md   # 正本スキル
 skills/navigation-protocol.md
 .cursor/skills/          # Cursor 向けシンボリックリンク
-.cursor/mcp.json         # Cursor MCP（秘密は .env または mcp-redmine）
+.cursor/mcp.json.example # Cursor MCP テンプレート（追跡）
+.cursor/mcp.json         # ローカル MCP 設定（gitignore）
 .env.example
 .opencode/
   opencode.jsonc.example # 追跡するテンプレート
