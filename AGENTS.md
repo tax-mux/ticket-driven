@@ -73,6 +73,7 @@ hermes-sync-opencode-rules
 | `ticket-status` | ステータス別アクション |
 | `ticket-update` | チケット更新 |
 | `ticket-evaluate` | 実装を DoD 照合で点検し、評価をジャーナルへ追記 |
+| （ticket-driven 内）`request-eval` | 別途評価エージェント定義時の計画/実装評価依頼（自己評価禁止） |
 | `git-commit` | Gitコミット（依頼時。標準ルールと併用） |
 | `git-pr` | PR作成（gh / GitBucket API） |
 | `git-branch` | ブランチ操作 |
