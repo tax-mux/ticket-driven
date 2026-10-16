@@ -54,7 +54,7 @@ description: >-
 | 開く条件 | 読むファイル |
 |----------|----------------|
 | 手順の詳細・点検順 | `sections/workflow.md` |
-| DoD・範囲・**コード品質（注意点レーン）**・**UIトンマナ／ユーザビリティ**の点検観点 | `sections/criteria.md` |
+| DoD・範囲・**コード品質（注意点レーン）**・**セキュリティ（注意点レーン）**・**UIトンマナ／ユーザビリティ**の点検観点 | `sections/criteria.md` |
 | ジャーナル `評価:` の書式・例 | `sections/journal-format.md` |
 | 画面票でヒューリスティック詳細が必要 | スキル **`ui-critique`** の `sections/heuristics.md`（本スキル外） |
 | UI スクショ／Playwright 手順 | `ticket-driven` の `sections/ui-verify.md` |
