@@ -15,7 +15,7 @@ Without mcp-redmine you can still use `./tools/redmine_helper.sh` as a CLI fallb
 Typical agent path: **New → In Progress → Review → Resolved**.
 
 - After implementation checks, move to **Review** (do not resolve from In Progress).
-- Run **`ticket-evaluate`** while the issue is in Review (`評価:` notes only; no status change). Plan evaluation after split is also supported.
+- Run **`ticket-evaluate`** while the issue is in Review (`評価:` notes only; no status change). Plan evaluation after split is also supported. Criteria include quality and **security** note lanes (blockers only for real safety/data harm; not sole grounds for fail).
 - When a separate evaluation agent is defined (e.g. host skill `ticket-driven-ask-*-eval`), request plan eval right after split and implementation eval after Review — do not self-write `評価:` (`request-eval.md`).
 - On fail: implementer returns Review → In Progress. On pass: close-audit, then Review → Resolved.
 - Redmine “Feedback” stays for human pushback; LLM evaluation uses **Review**. Confirm numeric `status_id` via `redmine_metadata` (this environment’s Review is often `7`).
@@ -100,7 +100,7 @@ Canonical files are `skills/<name>/SKILL.md`. Index: `skills/navigation-protocol
 | `ticket-refine` | Refine requirements before split |
 | `ticket-relation` | Issue relations |
 | `ticket-split` | Split by capability → session-sized children |
-| `ticket-evaluate` | Plan or implementation review vs DoD → `評価:` journal (`種別: 計画\|実装`; no status change) |
+| `ticket-evaluate` | Plan or implementation review vs DoD → `評価:` journal (`種別: 計画\|実装`; no status change). Note lanes: quality (Q1–Q5), **security (S1–S5)**, UI when applicable |
 | `ticket-status` | Status-based actions |
 | `ticket-update` | Update fields / description |
 
