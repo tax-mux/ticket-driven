@@ -45,7 +45,7 @@
 | `~/.hermes/skills/software-development/<name>` | Hermes（正本への symlink。コピー禁止） |
 | `~/.pi/agent/skills/<name>` | pi ホスト（正本への symlink。コピー禁止。compose は bind-mount） |
 | `.opencode/opencode.jsonc` | OpenCode 登録（gitignore。example からコピー） |
-| `.cursor/mcp.json` | Cursor MCP（**Redmine 必須**。外部記憶 MCP は任意）。秘密は `.env`） |
+| `.cursor/mcp.json` | Cursor MCP（gitignore。`.cursor/mcp.json.example` からコピー。**Redmine 必須**。外部記憶 MCP は任意）。秘密は `.env`） |
 | `.env` | Cursor MCP 用秘密（gitignore。`.env.example` からコピー） |
 
 コピーが残ったら `./tools/sync-skill-links.sh` で正本リンクに戻す。

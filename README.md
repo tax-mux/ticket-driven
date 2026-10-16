@@ -51,6 +51,12 @@ export REDMINE_API_KEY=your_key
 
 ### 4. Cursor
 
+```bash
+cp .cursor/mcp.json.example .cursor/mcp.json
+```
+
+`.cursor/mcp.json` is gitignored. Edit for your environment:
+
 - Project: `.cursor/skills/` → symlinks into `skills/` (shipped in-repo)
 - Personal: symlink the same names under `~/.cursor/skills/` for other workspaces
 - MCP: `.cursor/mcp.json`
@@ -132,7 +138,8 @@ Cursor user rules own the default commit/PR safety steps. This repo’s `git-*` 
 skills/<name>/SKILL.md   # canonical skills
 skills/navigation-protocol.md
 .cursor/skills/          # Cursor symlinks
-.cursor/mcp.json         # Cursor MCP (secrets in .env or mcp-redmine)
+.cursor/mcp.json.example # Cursor MCP template (tracked)
+.cursor/mcp.json         # local MCP config (gitignored)
 .env.example
 .opencode/
   opencode.jsonc.example
