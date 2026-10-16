@@ -15,7 +15,8 @@ mcp-redmine が無い場合でも `./tools/redmine_helper.sh` で CLI フォー�
 エージェント通常経路: **新規 → 進行中 → レビュー → 解決**。
 
 - 実装検証後は **レビュー** へ（進行中のまま解決しない）
-- レビュー中に **`ticket-evaluate`**（`評価:` は notes のみ。status は触らない）
+- レビュー中に **`ticket-evaluate`**（`評価:` は notes のみ。status は触らない。計画評価にも対応）
+- ホストに別途評価エージェント（例: `ticket-driven-ask-*-eval`）があるときは、分割直後に計画・レビュー提出後に実装の **評価依頼連絡**（自己 `評価:` 禁止。詳細は `request-eval.md`）
 - 不合格: 実装側がレビュー→進行中へ差し戻し。合格: クローズ監査のうえレビュー→解決
 - 「フィードバック」は人の差し戻し用。LLM 評価は **レビュー** を使う。数値 `status_id` は `redmine_metadata` で確認（本環境のレビューは目安 `7`）
 
@@ -93,13 +94,13 @@ npm run validate:opencode
 
 | スキル | 内容 |
 |--------|------|
-| `ticket-driven` | チケット駆動開発の全体ワークフロー |
+| `ticket-driven` | チケット駆動開発の全体ワークフロー（別途評価エージェント定義時は `request-eval`） |
 | `ticket-create` | チケット作成 |
 | `ticket-list` | チケット一覧取得 |
 | `ticket-refine` | チケット精緻化（分割前の要件充足） |
 | `ticket-relation` | チケット関連付け |
 | `ticket-split` | チケット分割（機能構成→セッション完走） |
-| `ticket-evaluate` | 実装を DoD 照合して `評価:` ジャーナルへ（レビュー状態・status 変更なし） |
+| `ticket-evaluate` | 計画または実装を DoD 照合して `評価:` ジャーナルへ（`種別: 計画\|実装`・status 変更なし） |
 | `ticket-status` | ステータス別アクション |
 | `ticket-update` | チケット更新 |
 

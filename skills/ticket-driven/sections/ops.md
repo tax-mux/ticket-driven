@@ -51,11 +51,24 @@
   "action": "update",
   "issue_id": "{CHILD_ID}",
   "status_id": 7,
-  "notes": "レビュー提出: 実装検証済み。ticket-evaluate 待ち。"
+  "notes": "レビュー提出: 実装検証済み。ticket-evaluate 待ち。\n評価依頼: 実装 — #{CHILD_ID} — 先方:{識別名}"
 }
 ```
 
+`評価依頼:` 行は **別途評価エージェント定義時のみ**必須（未定義なら省略可。詳細は `request-eval.md`）。
+
 `status_id` の **7** は本環境の「レビュー」目安。必ず `redmine_metadata` `kind: "issue_statuses"` で確認する。
+
+計画評価依頼（split 直後・定義時。親または単一票）:
+
+```json
+{
+  "action": "update",
+  "issue_id": "{PARENT_OR_SINGLE}",
+  "notes": "評価依頼: 計画 — #{ID} — 先方:{識別名} — 子: #a,#b"
+}
+```
+
 
 評価不合格時の差し戻し（実装側。評価側は status を触らない）:
 

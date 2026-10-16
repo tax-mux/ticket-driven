@@ -70,6 +70,7 @@ refine 後も DoD 不能／外部情報必須 → 質問は最大3つ。例外: 
 | UI・画面・見た目の変更 | `sections/ui-verify.md` |
 | 実装中の予防／実装後のリファクタ検討 | `sections/refactor.md` |
 | 子チケットがある・分割直後 | `sections/after-split.md` |
+| 別途評価エージェントが定義されている（ask-*-eval 等） | `sections/request-eval.md` |
 | MCP・ステータス・操作例・コミット/PR | `sections/ops.md` |
 
 スキルトリガー表は `skills/navigation-protocol.md`。
@@ -82,6 +83,7 @@ refine 後も DoD 不能／外部情報必須 → 質問は最大3つ。例外: 
 A. get(#N) + 計画をチケットに書く
    → ticket-refine（足りていればスキップ）
    → ticket-split → 親に `分割:` または `分割不要:`（Redmine notes。書式は sections/journal.md）
+   → **別途評価エージェント定義時**（`request-eval.md`）: `評価依頼: 計画` ＋連絡し結果待ち。不合格なら着手禁止
 
 B. 着手
    → `着手:` + 委任パック + **status_id=進行中**（子があるなら **子のみ**）→ delegate-pack.md / ops.md
@@ -92,10 +94,12 @@ C. 実装
 
 D. レビュー提出
    → 実装検証が終わったら **`status_id`=レビュー**（目安 id=7。必ず `redmine_metadata` で確認）+ `notes`（`レビュー提出:` 可）
+   → **別途評価エージェント定義時**: `評価依頼: 実装` ＋連絡（自己 `評価:` 禁止）。未定義なら E で自己実行可
    → **進行中のまま解決しない**（レビューを飛ばして Resolved は禁止）
 
 E. 評価（別視点。原則 Cursor / `ticket-evaluate`）
    → 票が **レビュー** のあいだに `評価:` を `notes` のみで書く（status / done_ratio は触らない）
+   → **定義時**は評価側が書く。実装側は書かない（`request-eval.md`）
    → **不合格**: 実装側が **レビュー→進行中** に差し戻し、修正して D からやり直し。この時点で Resolved 禁止
    → **合格 / 条件付き合格（ブロッカーなし）**: 実装側が F へ
 
