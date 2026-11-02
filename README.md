@@ -20,6 +20,15 @@ Typical agent path: **New → In Progress → Review → Resolved**.
 - On fail: implementer returns Review → In Progress. On pass: close-audit, then Review → Resolved.
 - Redmine “Feedback” stays for human pushback; LLM evaluation uses **Review**. Confirm numeric `status_id` via `redmine_metadata` (this environment’s Review is often `7`).
 
+### Decision records (keeping the “why”)
+
+DoD, start notes, and completion notes record *what* was done, not *why*. When a ticket involves a design choice (there were alternatives / a value, parameter, or approach was picked / the plan changed mid-work), record the **decision, reason, rejected options, and assumptions**.
+
+- **Record**: decisions made during refine go in the description’s `## 判断` section; decisions made or changed after start go in a `判断:` journal note (`ticket-driven` → `sections/journal.md`, “判断の記録”).
+- **Refine**: sufficiency check includes “判断の根拠” (decision rationale). When rewriting the description, rationale from the old text (measurements, user instructions, reasons for rejecting options) **must not be deleted** — only moved to `背景` (background) or `判断` (`ticket-refine` → `sufficiency.md`).
+- **Evaluate**: plan criterion P3 (missing rationale → conditional pass; deleted rationale → fail) and implementation criterion I5 (plan changed without a `判断:` note → note-lane finding).
+- Skip it for tickets with no real choice (no boilerplate). Close-audit and delegate-pack fields are unchanged.
+
 ## Setup
 
 ### 1. Dependencies
@@ -106,7 +115,7 @@ Canonical files are `skills/<name>/SKILL.md`. Index: `skills/navigation-protocol
 | `ticket-refine` | Refine requirements before split |
 | `ticket-relation` | Issue relations |
 | `ticket-split` | Split by capability → session-sized children |
-| `ticket-evaluate` | Plan or implementation review vs DoD → `評価:` journal (`種別: 計画\|実装`; no status change). Note lanes: quality (Q1–Q5), **security (S1–S5)**, UI when applicable |
+| `ticket-evaluate` | Plan or implementation review vs DoD → `評価:` journal (`種別: 計画\|実装`; no status change). Note lanes: quality (Q1–Q5), **security (S1–S5)**, UI when applicable. Decision rationale (plan P3, implementation I5) |
 | `ticket-status` | Status-based actions |
 | `ticket-update` | Update fields / description |
 
