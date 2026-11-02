@@ -22,9 +22,11 @@
   "issue_id": "{ID}",
   "done_ratio": 100,
   "status_id": 3,
-  "notes": "完了: ... — テスト: ..."
+  "notes": "完了: ...\n検証:\n- [x] {DoD項目} — 実行: `{コマンド}` → {結果}"
 }
 ```
+
+`検証:` 欄の書式（DoD 項目ごとの証跡・`未実行:`）は `ticket-driven` の `sections/close-audit.md`「検証証跡」。
 
 **禁止**: 先に `status_id: 3` だけ送り、あとから `done_ratio` だけ直す。**禁止**: `status_id: 5`（終了）をエージェントが使うこと。
 

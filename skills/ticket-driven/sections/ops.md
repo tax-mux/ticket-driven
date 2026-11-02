@@ -88,7 +88,7 @@
   "action": "update",
   "issue_id": "{CHILD_ID}",
   "done_ratio": 100,
-  "notes": "完了: {概要} — テスト: {結果}\nクローズ監査: DoD全[x]=yes / 検証一致=yes / 親実装なし=yes / 範囲内=yes / 調査のみでない=yes / ステータス実体=yes / done_ratio実体=yes / 人手想定とブースト=yes / 評価済み=yes\nブースト: 想定{estimated_hours}h / 経過{h}h ≈ {倍率}x"
+  "notes": "完了: {概要}\n検証:\n- [x] {DoD項目1} — 実行: `{コマンド}` → {n} pass / {m} fail\n- [x] {DoD項目2} — 添付: {ファイル名}\nクローズ監査: DoD全[x]=yes / 検証一致=yes / 親実装なし=yes / 範囲内=yes / 調査のみでない=yes / ステータス実体=yes / done_ratio実体=yes / 人手想定とブースト=yes / 評価済み=yes\nブースト: 想定{estimated_hours}h / 経過{h}h ≈ {倍率}x"
 }
 ```
 

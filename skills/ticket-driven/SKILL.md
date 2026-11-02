@@ -104,7 +104,7 @@ E. 評価（別視点。原則 Cursor / `ticket-evaluate`）
    → **合格 / 条件付き合格（ブロッカーなし）**: 実装側が F へ
 
 F. 完了
-   → close-audit.md（評価済み含む）→ 完了ノート + **`done_ratio`=100** + **`status_id`=Resolved**（レビュー→解決）→ コミット/PR は依頼時のみ（ops.md）
+   → close-audit.md（評価済み含む）→ 完了ノート（**`検証:` 欄に DoD 項目ごとの証跡**）+ **`done_ratio`=100** + **`status_id`=Resolved**（レビュー→解決）→ コミット/PR は依頼時のみ（ops.md）
    → 子 Resolved 直後は **親 done_ratio** を更新（after-split.md）
 ```
 
@@ -119,7 +119,7 @@ F. 完了
 | C 途中 | 同左 | 主要 DoD 完了ごとに **`done_ratio`**（0→25→50→75。詰まり報告以外の連投は不要） |
 | D レビュー提出 | 同左 | **`status_id`=レビュー**（metadata で ID 確認。本環境目安 **7**） |
 | E 評価 | 同左 | `ticket-evaluate` が `評価:` **notes のみ**（status 変更禁止）。不合格時は実装側が **レビュー→進行中** |
-| F 完了 | 同左 | `notes`（`完了:` + クローズ監査 + **`ブースト:`**）+ **`done_ratio`=100** + **`status_id`=Resolved**（レビューから） |
+| F 完了 | 同左 | `notes`（`完了:` + **`検証:`（DoD ごとの証跡）** + クローズ監査 + **`ブースト:`**）+ **`done_ratio`=100** + **`status_id`=Resolved**（レビューから） |
 | 子が Resolved | **親** | **`done_ratio`** = 完了子数 / 子総数（%）。全子後に親 Resolved |
 
 - New のまま実装しない / 0% のまま Resolved しない / **進行中のまま Resolved しない**（必ずレビュー経由）
