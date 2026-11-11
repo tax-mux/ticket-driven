@@ -35,6 +35,7 @@
 ツール: `redmine_issues`（推奨）。逃げ道だけ `redmine_api_request` POST `/issues.json`（`parent_issue_id` / `estimated_hours`）。
 
 - `description` は `templates.md` を **埋めた本文**。プレースホルダや見出しだけの子は作らない
+- この子だからこそ開くスキルがあれば `## 使うスキル（任意）` に理由付きで書く（書き方は `templates.md`。該当なしなら節ごと省略）
 - 親と **同じプロジェクト** に作る。プロジェクトを跨がない
 - **`estimated_hours`**: その子の **人手想定（人時）**。エージェント前提で短くしない。親ハブにも機能全体の人手想定を推奨（`ticket-driven` の `ops.md`）
 
